@@ -1,31 +1,229 @@
-// Constants
+// ------------------------ //
+// HTML Manipulation Stuff
+// ------------------------ //
+function showErrorMode(errors) {
+  document.getElementById('error-list').classList.remove('hidden');
+  document.getElementById('valid-data').classList.add('hidden');
 
-
-// Handles the button between Panel 1 and Panel 2
-function handleButtonClick() {
-    alert("Middle Action Button Clicked");
-    const inputVals = getInputValues();
-    const columnStringsArray = inputVals.slice(0, 11);
-    const freeSlotString = inputVals[11];
-
-    const newGameState = GameState.initFromColumnsStringArray(columnStringsArray, freeSlotString);
-    setDisplayValsFromGameState(newGameState);
+  const errorList = document.getElementById('error-list');
+  errorList.innerHTML = '';
+  errors.forEach(err => {
+    const li = document.createElement('li');
+    li.textContent = err;
+    errorList.appendChild(li);
+  });
 }
 
-// Handles the button below Panel 1 and Panel 2
-function handleBelowTopButtonClick() {
-    alert("Button Below Top Panels Clicked");
+function showValidMode(sevenValues, columnData) {
+  document.getElementById('error-list').classList.add('hidden');
+  document.getElementById('valid-data').classList.remove('hidden');
+
+  // Populate 7-value row
+  const sevenCells = document.querySelectorAll('.valid-cell-7');
+  sevenCells.forEach((cell, i) => {
+    cell.textContent = sevenValues[i] || '';
+  });
+
+  // Populate 11 columns
+  const columns = document.querySelectorAll('.valid-column');
+  columns.forEach((col, colIndex) => {
+    const rowsContainer = col.querySelector('.valid-rows');
+    rowsContainer.innerHTML = '';
+    const rows = columnData[colIndex] || [];
+    rows.forEach(val => {
+      const div = document.createElement('div');
+      div.textContent = val;
+      rowsContainer.appendChild(div);
+    });
+  });
 }
 
-// Handles the button below Panel 3
-function handleBelowPanel3ButtonClick() {
-    alert("Button Below Panel 3 Clicked");
+// Example usage:
+// showErrorMode(['Error 1', 'Error 2']);
+// showValidMode(['A','B','C','D','E','F','G'], [['1','2', 'A','B','C','D','E','F','G'], ['x'], [], [], [], [], [], [], [], [], []]);
+
+function setResults(sub1, sub2, values) {
+  // Set subheaders
+  document.getElementById('subheader1').textContent = sub1;
+  document.getElementById('subheader2').textContent = sub2;
+
+  // Set ordered list items
+  const resultList = document.getElementById('result-list');
+  resultList.innerHTML = ''; // clear previous items
+
+  values.forEach(val => {
+    const li = document.createElement('li');
+    li.textContent = val;
+    resultList.appendChild(li);
+  });
 }
 
-// Takes a string
-// trims preceding and trailing whitespace
-// reduces and instances of multiple spaces to a single sace
-// makes it lowercase
+// Example usage:
+// setResults("Summary:", "Details:", ["Item 1", "Item 2", "Item 3"]);
+
+// Get first 12 input values
+function getStandardInputValues() {
+  const values = [];
+  for (let i = 1; i <= 12; i++) {
+    const input = document.getElementById(`input${i}`);
+    values.push(input ? input.value : '');
+  }
+  return values;
+}
+
+// Get advanced input values (2)
+function getAdvancedInputValues() {
+  const adv1 = document.getElementById('adv1');
+  const adv2 = document.getElementById('adv2');
+  return [
+    adv1 ? adv1.value : '',
+    adv2 ? adv2.value : ''
+  ];
+}
+
+// Example usage:
+// const allValues = getAllInputValues();
+// console.log(allValues);
+
+// Set first 12 input values
+function setStandardInputValues(values) {
+  if (!Array.isArray(values) || values.length !== 12) {
+    console.error("Expected an array of 12 values.");
+    return;
+  }
+
+  for (let i = 1; i <= 12; i++) {
+    const input = document.getElementById(`input${i}`);
+    if (input) input.value = values[i - 1];
+  }
+}
+
+// Set advanced input values (2)
+function setAdvancedInputValues(values) {
+  if (!Array.isArray(values) || values.length !== 2) {
+    console.error("Expected an array of 2 values.");
+    return;
+  }
+
+  const adv1 = document.getElementById('adv1');
+  const adv2 = document.getElementById('adv2');
+  if (adv1) adv1.value = values[0];
+  if (adv2) adv2.value = values[1];
+}
+
+// Middle button hook
+const middleButton = document.getElementById('middle-button');
+middleButton.addEventListener('click', () => {
+  // This is where you handle the middle button click
+  console.log("Middle button clicked!");
+
+  let userGameState = null;
+  let errorFound = false;
+  const standardValues = getStandardInputValues();
+  try {
+    const columnStrings = standardValues.slice(0,11);
+    const freeSlotString = standardValues[11];
+    userGameState = GameState.initFromColumnsStringArray(columnStrings, freeSlotString);
+  } catch (e) {
+    showErrorMode(["Errors found!",].concat(e));
+    errorFound = true;
+  }
+
+  if (!errorFound) {
+    setDisplayValsFromGameState(userGameState);
+  }
+  console.log("Standard inputs:", standardValues);
+
+  // You can call your own functions here to process data
+});
+
+// Result button hook
+const resultButton = document.getElementById('result-button');
+resultButton.addEventListener('click', () => {
+  const confirmedValues = getConfirmationValues();
+  const advSettings = getAdvancedInputValues();
+  let maxDepth = null;
+  try {
+    maxDepth = Number.parseInt(advSettings[0]);
+  } catch {
+    setResults("Max search depth must be set to a number!")
+  }
+  let maxStates = null;
+  try {
+    maxStates = Number.parseInt(advSettings[1]);
+  } catch {
+    setResults("Max games states to consider must be a number!")
+  }
+
+  if (confirmedValues === null){
+    setResults("Please fix input values before solving!")
+    return;
+  }
+
+  const gs = GameState.initFromColumnsStringArray(
+  confirmedValues.columnStringsArray, confirmedValues.freeSlot);
+  const [solutionMoveSets, recursionMonitor] = gs.solve(maxDepth, maxStates);
+
+  console.log("Result button clicked!");
+  if (solutionMoveSets === null){
+    setResults("No solution Found. :(", `Deepest Search Depth: ${recursionMonitor.deepestDepth}    Total Game States Checked: ${recursionMonitor.checkedStates}`, []);
+  } else {
+    const solutionSteps = [] = [];
+    for (const solutionMoveSet of solutionMoveSets) {
+      solutionSteps.push(solutionMoveSet.description);
+    }
+    setResults("Solution found! :)", `Deepest Search Depth: ${recursionMonitor.deepestDepth}    Total Game States Checked: ${recursionMonitor.checkedStates}`, solutionSteps);
+  }
+
+});
+
+function getConfirmationValues() {
+  const validSection = document.getElementById('valid-data');
+  if (validSection.classList.contains('hidden')) {
+    // Section is not in valid mode
+    return null;
+  }
+
+  const result = {
+    topValues: [],
+    columnStringsArray: [],
+    freeSlot: "",
+  };
+
+  // Get the top row values
+  const topRowVals = document.querySelectorAll('.valid-cell-7');
+  topRowVals.forEach(cell => {
+    result.topValues.push(cell.textContent);
+  });
+
+  result.freeSlot = topRowVals[2].textContent;
+  if (result.freeSlot === "[    ]") result.freeSlot = ""; // We display an empty free slot with brackets for clarity
+
+  // Get the 11 columns
+  const columns = document.querySelectorAll('.valid-column');
+  columns.forEach(col => {
+    const rowsContainer = col.querySelector('.valid-rows');
+    const rowValues = [];
+    rowsContainer.querySelectorAll('div').forEach(div => {
+      rowValues.push(div.textContent);
+    });
+    result.columnStringsArray.push(rowValues.join(" "));
+  });
+
+  return result;
+}
+
+
+
+// ------------------------ //
+// Logic Stuff
+// ------------------------ //
+
+/* Takes a string
+Removes preceding and trailing whitespace.
+Replaces all instances of multiple spaces to a single space.
+Makes it lowercase.
+ */
 function cleanInputString(inputString) {
     let updatedString = inputString;
     updatedString = updatedString.trim();
@@ -33,50 +231,6 @@ function cleanInputString(inputString) {
     updatedString = updatedString.toLowerCase();
 
     return updatedString;
-}
-
-// Sets the content in the table of Panel 2, including the top row
-// topRowValues: array of 7 strings for the top row headers
-// columnsData: array of arrays for each column's content
-function setDisplayVals(topRowValues, columnsData) {
-    const table = document.querySelector(".panel-2 table");
-    const errorList = document.getElementById("panel2-error-list");
-
-    // Show the table and hide errors
-    table.style.display = "table";
-    if (errorList) errorList.style.display = "none";
-
-    // Update the top row headers
-    const thead = table.querySelector("thead tr");
-    thead.innerHTML = "";
-    topRowValues.forEach(value => {
-        const th = document.createElement("th");
-        th.textContent = value;
-        thead.appendChild(th);
-    });
-
-    // Update the columns below
-    const tableColumns = table.querySelector(".table-columns");
-    tableColumns.innerHTML = "";
-
-    columnsData.forEach((col, index) => {
-        const columnDiv = document.createElement("div");
-        columnDiv.className = "column";
-
-        const label = document.createElement("div");
-        label.className = "column-label";
-        label.textContent = `Col ${index + 1}`;
-        columnDiv.appendChild(label);
-
-        col.forEach(item => {
-            const cell = document.createElement("div");
-            cell.className = "cell";
-            cell.textContent = item;
-            columnDiv.appendChild(cell);
-        });
-
-        tableColumns.appendChild(columnDiv);
-    });
 }
 
 
@@ -133,53 +287,7 @@ function setDisplayValsFromGameState(gameState) {
 
     const columnStringArrays = gameState.getColumnStringArrays();
 
-    setDisplayVals(topVals, columnStringArrays);
-}
-
-// Hides the table and shows error messages in Panel 2
-// errors: array of strings
-function showPanel2Errors(errors) {
-    const table = document.querySelector(".panel-2 table");
-    let errorList = document.getElementById("panel2-error-list");
-
-    // Hide the table
-    table.style.display = "none";
-
-    // Create the error list if it doesn't exist
-    if (!errorList) {
-        errorList = document.createElement("ul");
-        errorList.id = "panel2-error-list";
-        errorList.style.color = "red";
-        errorList.style.padding = "10px";
-        errorList.style.marginTop = "10px";
-        document.querySelector(".panel-2").appendChild(errorList);
-    }
-
-    // Show and populate the error list
-    errorList.style.display = "block";
-    errorList.innerHTML = "";
-    errors.forEach(error => {
-        const li = document.createElement("li");
-        li.textContent = error;
-        errorList.appendChild(li);
-    });
-}
-
-// Sets the ordered list in Panel 3
-function setPanel3Text(items) {
-    const list = document.querySelector(".panel-3 ol");
-    list.innerHTML = "";
-    items.forEach(item => {
-        const li = document.createElement("li");
-        li.textContent = item;
-        list.appendChild(li);
-    });
-}
-
-// Gets all values from the text boxes in Panel 1 and returns them as an array of strings
-function getInputValues() {
-    const inputs = document.querySelectorAll(".input-panel input[type='text']");
-    return Array.from(inputs).map(input => input.value);
+    showValidMode(topVals, columnStringArrays)
 }
 
 // Solver Logic
@@ -210,7 +318,11 @@ class Card {
     }
 
     static newCardFromString(cardStr) {
-        const cleanCardStr = cleanInputString(cardStr);
+        let cleanCardStr = cardStr
+        // This for the special case when reading a card string from the free Slot display
+        cleanCardStr = cleanCardStr.replace('[', '');
+        cleanCardStr = cleanCardStr.replace(']', '');
+        cleanCardStr = cleanInputString(cleanCardStr);
         const cardSuit = cleanCardStr.substring(cardStr.length - 1);
         const cardVal = cleanCardStr.substring(0, cardStr.length - 1);
 
@@ -321,6 +433,48 @@ class CardPile {
 
         this.topCard = topCard;
         this.cardArray = cardArray;
+    }
+
+
+    static getUIPileLabel (labelStr) {
+      switch (labelStr) {
+        case "c1":
+          return "Col 1";
+        case "c2":
+          return "Col 2";
+        case "c3":
+          return "Col 3";
+        case "c4":
+          return "Col 4";
+        case "c5":
+          return "Col 5";
+        case "c6":
+          return "Col 6";
+        case "c7":
+          return "Col 7";
+        case "c8":
+          return "Col 8";
+        case "c9":
+          return "Col 9";
+        case "c10":
+          return "Col 10";
+        case "c11":
+          return "Col 11";
+        case "tarotSmall":
+          return "Small Tarot Pile"
+        case "tarotLarge":
+          return "Large Tarot Pile"
+        case "suitY":
+          return "Yellow Suit Pile";
+        case "suitR":
+          return "Red Suit Pile";
+        case "suitG":
+          return "Green Suit Pile";
+        case "suitB":
+          return "Blue Suit Pile";
+        case "freeSlot":
+          return "Free Card Slot";
+      }
     }
 
     lookTopCard() {
@@ -733,23 +887,35 @@ class GameState {
     }
 
     validate() {
+        const errors = [];
         for (const suit of ["y", "r", "g", "b"]) {
             for (let val = 1; val <= 13; ++val) {
-                const searchCard = new Card(val, suit);
-                let count = 0;
-                count += this.countCardInColumnsAndFree(searchCard);
-                if (this.isCardCommitted(searchCard)) count++;
-                if (count === 0) throw new Error(`Validation failed! ${searchCard} missing!`);
-                if (count > 1) throw new Error(`Validation failed! Found ${count} copies of ${searchCard}!`);
+              const searchCard = new Card(val, suit);
+              let count = 0;
+              count += this.countCardInColumnsAndFree(searchCard);
+              if (this.isCardCommitted(searchCard)) count++;
+              if (count === 0) {
+                errors.push(new Error(`Validation failed! ${searchCard} missing!`));
+              }
+              if (count > 1) {
+                errors.push(new Error(`Validation failed! Found ${count} copies of ${searchCard}!`));
+              }
             }
         }
         for (let val = 0; val <= 21; ++val) {
-            const searchCard = new Card(val, "t");
-            let count = 0;
-            count += this.countCardInColumnsAndFree(searchCard);
-            if (this.isCardCommitted(searchCard)) count++;
-            if (count === 0) throw new Error(`Validation failed! ${searchCard} missing!`);
-            if (count > 1) throw new Error(`Validation failed! Found ${count} copies of ${searchCard}!`);
+          const searchCard = new Card(val, 't');
+          let count = 0;
+          count += this.countCardInColumnsAndFree(searchCard);
+          if (this.isCardCommitted(searchCard)) count++;
+          if (count === 0) {
+            errors.push(new Error(`Validation failed! ${searchCard} missing!`));
+          }
+          if (count > 1) {
+            errors.push( new Error(`Validation failed! Found ${count} copies of ${searchCard}!`));
+          }
+        }
+        if (errors.length > 0) {
+          throw errors;
         }
         return true;
     }
@@ -1012,6 +1178,9 @@ class GameState {
         const originPile = this.getPileFromLabel(originLabel);
         const destPile = this.getPileFromLabel(destLabel);
 
+        const originUILabel = CardPile.getUIPileLabel(originLabel);
+        const destUILabel = CardPile.getUIPileLabel(destLabel);
+
         const [stackSize, topCard, bottomCard] = originPile.getTopStack();
         if (stackSize === 0) return null;
         if (!destPile.canReceiveCard(topCard)) return null;
@@ -1019,13 +1188,13 @@ class GameState {
         const destDesc = destPile.topCardStr();
 
         if (stackSize === 1) {
-            let desc = `Move ${topCard} from ${originLabel} to ${destLabel} (${destDesc})`;
+            let desc = `Move ${topCard} from ${originUILabel} to ${destUILabel} (${destDesc})`;
             if (auto) {
                 desc = "AUTO " + desc;
             }
             return MoveSet.newSingleMove(desc, originLabel, destLabel, movePriority);
         } else {
-            let desc = `Move ${stackSize} stack (${topCard} - ${bottomCard}) from ${originLabel} to ${destLabel} (${destDesc})`;
+            let desc = `Move ${stackSize} stack (${topCard} - ${bottomCard}) from ${originUILabel} to ${destUILabel} (${destDesc})`;
             if (auto) {
                 desc = "AUTO " + desc;
             }
@@ -1045,15 +1214,19 @@ class GameState {
         const destPile = this.getPileFromLabel(destPileLabel);
         const [stackSize, topCard, bottomCard] = originPile.getTopStack()
 
+        const originUILabel = CardPile.getUIPileLabel(originLabel);
+        const destUILabel = CardPile.getUIPileLabel(destPileLabel);
+        const emptyColumnUILabel = CardPile.getUIPileLabel(emptyColumnLabel);
+
         if (stackSize <= 1) return null;
 
         if (destPile.canReceiveCard(bottomCard)) {
             const destDesc = destPile.topCardStr();
             let desc = "";
             if (GameState.COMMIT_PILE_LABELS.includes(destPileLabel)) {
-                desc = `Move ${stackSize} card stack (${topCard} - ${bottomCard}) from ${originLabel} to empty column ${emptyColumnLabel} then AUTO MOVE to ${destPileLabel}`
+                desc = `Move ${stackSize} card stack (${topCard} - ${bottomCard}) from ${originUILabel} to empty column ${emptyColumnUILabel} then AUTO MOVE to ${destUILabel}`
             } else {
-                desc = `Move ${stackSize} card stack (${topCard} - ${bottomCard}) from ${originLabel} to empty column ${emptyColumnLabel} then to ${destPileLabel} ((${destDesc}))`
+                desc = `Move ${stackSize} card stack (${topCard} - ${bottomCard}) from ${originUILabel} to empty column ${emptyColumnUILabel} then to ${destUILabel} (${destDesc})`
             }
             const newMoveSet = new MoveSet(desc, movePriority);
             newMoveSet.addStackMove(originLabel, emptyColumnLabel, stackSize - 1);
@@ -1069,10 +1242,13 @@ class GameState {
         const originPile = this.getPileFromLabel(originLabel);
         const destPile = this.getPileFromLabel(destLabel);
 
+        const originUILabel = CardPile.getUIPileLabel(originLabel);
+        const destUILabel = CardPile.getUIPileLabel(destLabel);
+
         const moveCard = originPile.lookTopCard();
         if (destPile.canReceiveCard(moveCard)) {
             const destDesc = destPile.topCardStr();
-            const desc = `Move ${moveCard} from ${originLabel} to ${destLabel} (${destDesc})`;
+            const desc = `Move ${moveCard} from ${originUILabel} to ${destUILabel} (${destDesc})`;
             return MoveSet.newSingleMove(desc, originLabel, destLabel, movePriority);
         }
 
@@ -1391,24 +1567,26 @@ class GameState {
     }
 
     solve(maxAllowedDepth = 200, maxAllowedStates = 500000) {
-        const topSubState = this.clone();
-        topSubState.processForcedMoves();
-        const checkedStateIDsSet = new Set();
-        const finalResult = topSubState.subSolve(checkedStateIDsSet, maxAllowedDepth, maxAllowedStates, 0);
-        if (finalResult === null) {
-            return null;
-        } else {
-            const finalResultReversed = finalResult.reverse();
-            return finalResultReversed;
-        }
+      const recursionMonitor = new RecursionMonitor();
+      const topSubState = this.clone();
+      topSubState.processForcedMoves();
+      const checkedStateIDsSet = new Set();
+      const finalResult = topSubState.subSolve(checkedStateIDsSet, maxAllowedDepth, maxAllowedStates, 0, recursionMonitor);
+      if (finalResult === null) {
+          return [null, recursionMonitor];
+      } else {
+          const finalResultReversed = finalResult.reverse();
+          return [finalResultReversed, recursionMonitor];
+      }
 
     }
 
-    subSolve(checkedStatesSet, maxAllowedDepth, maxAllowedStates, lastDepth) {
+    subSolve(checkedStatesSet, maxAllowedDepth, maxAllowedStates, lastDepth, recursionMonitor) {
 
-        this.validate();
+
         const currentDepth = lastDepth + 1;
-        deepestDepth = Math.max(deepestDepth, currentDepth);
+        recursionMonitor.updateDepth(currentDepth)
+
         if (currentDepth >= maxAllowedDepth) {
             return null;
         }
@@ -1430,7 +1608,7 @@ class GameState {
         }
 
         checkedStatesSet.add(postID);
-        checkedSetsSize = checkedStatesSet.size;
+        recursionMonitor.updateCheckedStates(checkedStatesSet.size);
 
         for (const nextPossibleMove of this.possibleMoves()) {
             const subState = this.clone();
@@ -1440,6 +1618,7 @@ class GameState {
                 maxAllowedDepth,
                 maxAllowedStates,
                 currentDepth,
+                recursionMonitor,
             );
 
             if (subResult !== null) {
@@ -1508,6 +1687,21 @@ class MoveSet {
     }
 
 
+}
+
+class RecursionMonitor{
+  constructor() {
+    this.deepestDepth = 0;
+    this.checkedStates = 0;
+  }
+
+  updateDepth(depth) {
+    this.deepestDepth = Math.max(this.deepestDepth, depth);
+  }
+
+  updateCheckedStates(checkedStates) {
+    this.checkedStates = Math.max(this.checkedStates, checkedStates);
+  }
 }
 
 const TEST_VALS_EMPTY = [
@@ -1696,12 +1890,11 @@ function test() {
 
 }
 
-test();
+let userGameState = null;
 
+// test();
+const INITIAL_INPUT_VALS = TRY_4;
+setStandardInputValues(INITIAL_INPUT_VALS);
+setAdvancedInputValues(["500", "10000"])
 
-/*
-next fixes:
-- should prioritize moving the free slot card if that will result in autocommits
-- should prioritize moving stacks that will reveal commitable cards
-    or maybe just deprioritize flipping stacks when the whole column is the same stack
- */
+console.log(getConfirmationValues());

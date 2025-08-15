@@ -1,133 +1,179 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 header {
-    text-align: center;
-    margin-bottom: 30px;
+    outline: 1px solid #aaa;
+    padding: 1em;
+    min-height: 80px;
 }
 
-.top-section {
+#main-container {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    padding: 0.5em;
     align-items: stretch;
-    margin-bottom: 30px;
 }
 
-.panel {
-    border: 1px solid #ccc;
-    padding: 15px;
-    box-sizing: border-box;
-    background-color: #f9f9f9;
-}
-
-.input-panel,
-.panel-2 {
-    width: 45%;
-}
-
-.panel-2 {
-    overflow-x: hidden;
-}
-
-.middle-button {
-    display: flex;
-    align-items: stretch;
-    justify-content: center;
-    padding: 0 5px;
-    width: 40px;
-}
-
-.middle-button button {
-    height: 100%;
-    width: 100%;
-    padding: 0;
-    margin: 0;
+#input,
+#confirmation {
+    outline: 1px solid #aaa;
+    flex: 1 1 300px;
+    min-height: 500px;
+    padding: 1em;
     box-sizing: border-box;
 }
 
-.form-group {
+/* Input section: labels and inputs always inline */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.form-row {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
-}
-
-.form-group label {
-    width: 80px;
-    margin-right: 10px;
-    font-weight: bold;
-}
-
-.form-group input {
-    flex: 1;
-    padding: 5px;
-}
-
-.panel-2 table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-}
-
-.panel-2 th {
-    width: 30px;
-    padding: 1px 3px;
-    font-size: 0.75em;
-    white-space: nowrap;
-    border: 1px solid #ccc;
-    text-align: center;
-}
-
-.panel-2 td {
-    border: 1px solid #ccc;
-    padding: 5px;
-    text-align: center;
-}
-
-.table-columns {
-    display: flex;
-    justify-content: space-between;
-    overflow-x: hidden;
+    gap: 0.5em;
     flex-wrap: nowrap;
 }
 
-.column {
+.form-row label {
+    flex: 0 0 auto;
+    min-width: 80px;
+}
+
+.form-row input {
+    display: inline-block;
+    width: 100%;
+    padding: 0.25em;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.input-large { max-width: 35ch; }
+.input-small { max-width: 8ch; }
+.input-adv-small { max-width: 6ch; }
+.input-adv-medium { max-width: 10ch; }
+
+/* Middle button */
+#middle-button {
+    min-width: 40px;
+    align-self: stretch;
+}
+
+/* Result button above result */
+#result-controls {
+    display: flex;
+    justify-content: stretch;
+    margin: 0.5em;
+}
+
+#result-button {
+    flex: 1;
+    padding: 0.5em 1em;
+    font-size: 1rem;
+}
+
+/* Result section */
+#result {
+    outline: 1px solid #aaa;
+    min-height: 150px;
+    margin: 0.5em;
+    padding: 1em;
+    box-sizing: border-box;
+}
+
+#subheaders {
+    margin-bottom: 0.5em;
+}
+
+#subheaders div {
+    font-weight: bold;
+    margin-bottom: 0.25em;
+}
+
+#result-list {
+    padding-left: 1.2em;
+}
+
+#result-list li {
+    margin-bottom: 0.25em;
+}
+
+/* Confirmation section: error/valid modes */
+#error-list {
+    color: red;
+    list-style: disc inside;
+    padding: 0.5em;
+    margin: 0;
+}
+
+.hidden { display: none; }
+
+.valid-row-seven {
+    display: flex;
+    gap: 0.5em;
+    margin-bottom: 1em;
+}
+
+.valid-cell-7 {
+    display: inline-block;
+    width: 5ch;
+    text-align: center;
+    border: 1px solid #ccc;
+    padding: 0.25em;
+    box-sizing: border-box;
+}
+
+/* 11 columns always side by side */
+.valid-columns {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.25em;
+}
+
+.valid-column {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin: 0 2px;
-    min-width: 30px;
-    width: 30px;
-    flex-shrink: 1;
+    flex: 0 0 auto;
+    min-width: 6ch;
+    max-width: 6ch;
 }
 
-.column-label {
-    font-weight: bold;
-    margin-bottom: 3px;
-    font-size: 0.8em;
-    white-space: nowrap;
-}
-
-.cell {
-    padding: 1px 3px;
-    border: 1px solid #ddd;
-    margin-bottom: 1px;
-    width: 30px;
+.valid-column strong {
+    margin-bottom: 0.25em;
     text-align: center;
-    font-size: 0.75em;
-    background-color: white;
 }
 
-.panel-3 {
-    max-height: 200px;
-    overflow-y: auto;
+.valid-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25em;
+}
+
+.valid-rows div {
+    width: 6ch;
     border: 1px solid #ccc;
-    padding: 10px;
-    background-color: #f0f0f0;
+    padding: 0.15em;
+    box-sizing: border-box;
+    text-align: center;
 }
 
-.panel-3 ol {
-    margin: 0;
-    padding-left: 20px;
+/* Stack sections vertically on narrow screens */
+@media (max-width: 800px) {
+    #main-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #middle-button {
+        min-height: 40px;
+        width: 100%;
+    }
+
+    #input { min-height: auto; }
 }

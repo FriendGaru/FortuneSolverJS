@@ -3,226 +3,135 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Webpage Layout</title>
+  <title>Minimal Layout</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header>
-  <h1>Simple Header</h1>
-  <p>This is a short description of the webpage.</p>
+<header id="header">
+  <h1>Page Name</h1>
+  <p>Brief description of the page.</p>
 </header>
 
-<main>
-  <div class="top-section">
-    <div class="panel input-panel">
-      <form>
-        <div class="form-group">
-          <label for="col0-input">Col0: </label>
-          <input type="text" id="col0-input" value="2r 3r 4r 5r 6r 7r 8r 9r">
+<main id="main-container">
+  <section id="input">
+    <h2>Input Section</h2>
+    <form id="input-form">
+      <!-- 12 standard inputs -->
+      <div class="form-row">
+        <label for="input1">Input 1:</label>
+        <input type="text" id="input1" maxlength="50" class="input-large">
+      </div>
+      <div class="form-row">
+        <label for="input2">Input 2:</label>
+        <input type="text" id="input2" maxlength="50" class="input-large">
+      </div>
+      <div class="form-row">
+        <label for="input3">Input 3:</label>
+        <input type="text" id="input3" maxlength="50" class="input-large">
+      </div>
+      <div class="form-row">
+        <label for="input4">Input 4:</label>
+        <input type="text" id="input4" maxlength="50" class="input-large">
+      </div>
+      <div class="form-row">
+        <label for="input5">Input 5:</label>
+        <input type="text" id="input5" maxlength="50" class="input-large">
+      </div>
+      <div class="form-row">
+        <label for="input6">Input 6:</label>
+        <input type="text" id="input6" maxlength="50" class="input-large">
+      </div>
+      <div class="form-row">
+        <label for="input7">Input 7:</label>
+        <input type="text" id="input7" maxlength="50" class="input-large">
+      </div>
+      <div class="form-row">
+        <label for="input8">Input 8:</label>
+        <input type="text" id="input8" maxlength="50" class="input-large">
+      </div>
+      <div class="form-row">
+        <label for="input9">Input 9:</label>
+        <input type="text" id="input9" maxlength="50" class="input-large">
+      </div>
+      <div class="form-row">
+        <label for="input10">Input 10:</label>
+        <input type="text" id="input10" maxlength="50" class="input-large">
+      </div>
+      <div class="form-row">
+        <label for="input11">Input 11:</label>
+        <input type="text" id="input11" maxlength="50" class="input-large">
+      </div>
+      <div class="form-row">
+        <label for="input12">Input 12:</label>
+        <input type="text" id="input12" maxlength="8" class="input-small">
+      </div>
+
+      <!-- Advanced collapsible section -->
+      <details>
+        <summary>Advanced</summary>
+        <div class="form-row">
+          <label for="adv1">Adv 1:</label>
+          <input type="text" id="adv1" maxlength="6" class="input-adv-small">
         </div>
-        <div class="form-group">
-          <label for="col1-input">Col1: </label>
-          <input type="text" id="col1-input" value="10r 11r 13r 13r">
+        <div class="form-row">
+          <label for="adv2">Adv 2:</label>
+          <input type="text" id="adv2" maxlength="10" class="input-adv-medium">
         </div>
-        <div class="form-group">
-          <label for="col2-input">Col2: </label>
-          <input type="text" id="col2-input" value="13y 12y 11y 10y 9y 8y 7y 6y 5y 4y">
-        </div>
-        <div class="form-group">
-          <label for="col3-input">Col3: </label>
-          <input type="text" id="col3-input" value="10t 11t 12t 13t 14t 15t">
-        </div>
-        <div class="form-group">
-          <label for="col4-input">Col4: </label>
-          <input type="text" id="col4-input" value="">
-        </div>
-        <div class="form-group">
-          <label for="col5-input">Col5: </label>
-          <input type="text" id="col5-input" value="">
-        </div>
-        <div class="form-group">
-          <label for="col6-input">Col6: </label>
-          <input type="text" id="col6-input" value="">
-        </div>
-        <div class="form-group">
-          <label for="col7-input">Col7: </label>
-          <input type="text" id="col7-input" value="">
-        </div>
-        <div class="form-group">
-          <label for="col8-input">Col8: </label>
-          <input type="text" id="col8-input" value="">
-        </div>
-        <div class="form-group">
-          <label for="col9-input">Col9: </label>
-          <input type="text" id="col9-input" value="">
-        </div>
-        <div class="form-group">
-          <label for="col10-input">Col10:</label>
-          <input type="text" id="col10-input" value="">
-        </div>
-        <div class="form-group">
-          <label for="freeslot-input">Free Slot:</label>
-          <input type="text" id="freeslot-input" value="">
-        </div>
-      </form>
+      </details>
+    </form>
+  </section>
+
+  <button id="middle-button">→</button>
+
+  <section id="confirmation">
+    <h2>Confirmation Section</h2>
+
+    <!-- Error mode -->
+    <ul id="error-list" class="hidden"></ul>
+
+    <!-- Valid mode -->
+    <div id="valid-data" class="hidden">
+      <!-- One row with 7 values -->
+      <div class="valid-row-seven">
+        <span class="valid-cell-7"></span>
+        <span class="valid-cell-7"></span>
+        <span class="valid-cell-7"></span>
+        <span class="valid-cell-7"></span>
+        <span class="valid-cell-7"></span>
+        <span class="valid-cell-7"></span>
+        <span class="valid-cell-7"></span>
+      </div>
+
+      <!-- 11 columns with label and rows -->
+      <div class="valid-columns">
+        <div class="valid-column"><strong>Col 1</strong><div class="valid-rows"></div></div>
+        <div class="valid-column"><strong>Col 2</strong><div class="valid-rows"></div></div>
+        <div class="valid-column"><strong>Col 3</strong><div class="valid-rows"></div></div>
+        <div class="valid-column"><strong>Col 4</strong><div class="valid-rows"></div></div>
+        <div class="valid-column"><strong>Col 5</strong><div class="valid-rows"></div></div>
+        <div class="valid-column"><strong>Col 6</strong><div class="valid-rows"></div></div>
+        <div class="valid-column"><strong>Col 7</strong><div class="valid-rows"></div></div>
+        <div class="valid-column"><strong>Col 8</strong><div class="valid-rows"></div></div>
+        <div class="valid-column"><strong>Col 9</strong><div class="valid-rows"></div></div>
+        <div class="valid-column"><strong>Col 10</strong><div class="valid-rows"></div></div>
+        <div class="valid-column"><strong>Col 11</strong><div class="valid-rows"></div></div>
+      </div>
     </div>
-
-    <div class="middle-button">
-      <button onclick="handleButtonClick()">Action</button>
-    </div>
-
-    <div class="panel-2">
-      <div class="error-area"></div>
-      <table>
-        <thead>
-        <tr>
-          <th>T-</th>
-          <th>T+</th>
-          <th>[  ]</th>
-          <th>1Y</th>
-          <th>1R</th>
-          <th>1G</th>
-          <th>1B</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td colspan="7">
-            <div class="table-columns">
-              <div class="column">
-                <div class="column-label">Col1</div>
-                <div class="cell">Item 1</div>
-                <div class="cell">Item 2</div>
-                <div class="cell">Item 3</div>
-                <div class="cell">Item 4</div>
-                <div class="cell">Item 5</div>
-              </div>
-              <div class="column">
-                <div class="column-label">Col2</div>
-                <div class="cell">Item 1</div>
-                <div class="cell">Item 2</div>
-                <div class="cell">Item 3</div>
-                <div class="cell">Item 4</div>
-                <div class="cell">Item 5</div>
-              </div>
-              <div class="column">
-                <div class="column-label">Col3</div>
-                <div class="cell">Item 1</div>
-                <div class="cell">Item 2</div>
-                <div class="cell">Item 3</div>
-                <div class="cell">Item 4</div>
-                <div class="cell">Item 5</div>
-              </div>
-              <div class="column">
-                <div class="column-label">Col4</div>
-                <div class="cell">Item 1</div>
-                <div class="cell">Item 2</div>
-                <div class="cell">Item 3</div>
-                <div class="cell">Item 4</div>
-                <div class="cell">Item 5</div>
-              </div>
-              <div class="column">
-                <div class="column-label">Col5</div>
-                <div class="cell">Item 1</div>
-                <div class="cell">Item 2</div>
-                <div class="cell">Item 3</div>
-                <div class="cell">Item 4</div>
-                <div class="cell">Item 5</div>
-              </div>
-              <div class="column">
-                <div class="column-label">Col6</div>
-                <div class="cell">Item 1</div>
-                <div class="cell">Item 2</div>
-                <div class="cell">Item 3</div>
-                <div class="cell">Item 4</div>
-                <div class="cell">Item 5</div>
-              </div>
-              <div class="column">
-                <div class="column-label">Col7</div>
-                <div class="cell">Item 1</div>
-                <div class="cell">Item 2</div>
-                <div class="cell">Item 3</div>
-                <div class="cell">Item 4</div>
-                <div class="cell">Item 5</div>
-              </div>
-              <div class="column">
-                <div class="column-label">Col8</div>
-                <div class="cell">Item 1</div>
-                <div class="cell">Item 2</div>
-                <div class="cell">Item 3</div>
-                <div class="cell">Item 4</div>
-                <div class="cell">Item 5</div>
-              </div>
-              <div class="column">
-                <div class="column-label">Col9</div>
-                <div class="cell">Item 1</div>
-                <div class="cell">Item 2</div>
-                <div class="cell">Item 3</div>
-                <div class="cell">Item 4</div>
-                <div class="cell">Item 5</div>
-              </div>
-              <div class="column">
-                <div class="column-label">Col10</div>
-                <div class="cell">Item 1</div>
-                <div class="cell">Item 2</div>
-                <div class="cell">Item 3</div>
-                <div class="cell">Item 4</div>
-                <div class="cell">Item 5</div>
-              </div>
-              <div class="column">
-                <div class="column-label">Col11</div>
-                <div class="cell">Item 1</div>
-                <div class="cell">Item 2</div>
-                <div class="cell">Item 3</div>
-                <div class="cell">Item 4</div>
-                <div class="cell">Item 5</div>
-              </div>
-              <div class="column">
-                <div class="column-label">Col1</div>
-                <div class="cell">Item 1</div>
-                <div class="cell">Item 2</div>
-                <div class="cell">Item 3</div>
-                <div class="cell">Item 4</div>
-                <div class="cell">Item 5</div>
-              </div>
-              <!-- Duplicate above column for 10 more times -->
-              <!-- ... -->
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="below-top-button">
-    <button onclick="handleBelowTopButtonClick()">Below Top Panels Button</button>
-  </div>
-
-  <div class="panel panel-3">
-    <ol>
-      <li>Item 1</li>
-      <li>Item 2</li>
-      <li>Item 3</li>
-      <li>Item 4</li>
-      <li>Item 5</li>
-      <li>Item 6</li>
-      <li>Item 7</li>
-      <li>Item 8</li>
-      <li>Item 9</li>
-      <li>Item 10</li>
-      <li>Item 11</li>
-      <li>Item 12</li>
-      <li>Item 13</li>
-      <li>Item 14</li>
-      <li>Item 15</li>
-    </ol>
-  </div>
-
-  <div class="below-panel3-button">
-    <button onclick="handleBelowPanel3ButtonClick()">Below Panel 3 Button</button>
-  </div>
+  </section>
 </main>
+
+<div id="result-controls">
+  <button id="result-button">Run</button>
+</div>
+
+<section id="result">
+  <h2>Results</h2>
+  <div id="subheaders">
+    <div id="subheader1"></div>
+    <div id="subheader2"></div>
+  </div>
+  <ol id="result-list"></ol>
+</section>
 
 <script src="script.js"></script>
 </body>
