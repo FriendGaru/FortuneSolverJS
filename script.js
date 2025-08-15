@@ -1,7 +1,7 @@
 // ------------------------ //
 // HTML Manipulation Stuff
 // ------------------------ //
-function showErrorMode(errors) {
+function showErrorGameState(errors) {
   document.getElementById('error-list').classList.remove('hidden');
   document.getElementById('valid-data').classList.add('hidden');
 
@@ -14,7 +14,7 @@ function showErrorMode(errors) {
   });
 }
 
-function showValidMode(sevenValues, columnData) {
+function showValidGameState(sevenValues, columnData) {
   document.getElementById('error-list').classList.add('hidden');
   document.getElementById('valid-data').classList.remove('hidden');
 
@@ -38,9 +38,6 @@ function showValidMode(sevenValues, columnData) {
   });
 }
 
-// Example usage:
-// showErrorMode(['Error 1', 'Error 2']);
-// showValidMode(['A','B','C','D','E','F','G'], [['1','2', 'A','B','C','D','E','F','G'], ['x'], [], [], [], [], [], [], [], [], []]);
 
 function setResults(sub1, sub2, values) {
   // Set subheaders
@@ -61,23 +58,25 @@ function setResults(sub1, sub2, values) {
 // Example usage:
 // setResults("Summary:", "Details:", ["Item 1", "Item 2", "Item 3"]);
 
-// Get first 12 input values
+// Get column and free slot input values
 function getStandardInputValues() {
   const values = [];
-  for (let i = 1; i <= 12; i++) {
-    const input = document.getElementById(`input${i}`);
-    values.push(input ? input.value : '');
+  for (let i = 1; i <= 11; i++) {
+    const colInput = document.getElementById(`col${i}`);
+    values.push(colInput ? colInput.value : '');
   }
+  const freeInput = document.getElementById(`free-slot`);
+  values.push(freeInput ? freeInput.value : '');
   return values;
 }
 
-// Get advanced input values (2)
+// Get advanced settings input values
 function getAdvancedInputValues() {
-  const adv1 = document.getElementById('adv1');
-  const adv2 = document.getElementById('adv2');
+  const maxDepth = document.getElementById('max-allowed-depth');
+  const maxStates = document.getElementById('max-game-states');
   return [
-    adv1 ? adv1.value : '',
-    adv2 ? adv2.value : ''
+    maxDepth ? maxDepth.value : '',
+    maxStates ? maxStates.value : ''
   ];
 }
 
@@ -92,10 +91,13 @@ function setStandardInputValues(values) {
     return;
   }
 
-  for (let i = 1; i <= 12; i++) {
-    const input = document.getElementById(`input${i}`);
-    if (input) input.value = values[i - 1];
+  for (let i = 1; i <= 11; i++) {
+    const colInput = document.getElementById(`col${i}`);
+    if (colInput) colInput.value = values[i - 1];
   }
+
+  const freeInput = document.getElementById(`free-slot`);
+  if (freeInput) freeInput.value = values[11];
 }
 
 // Set advanced input values (2)
@@ -105,10 +107,10 @@ function setAdvancedInputValues(values) {
     return;
   }
 
-  const adv1 = document.getElementById('adv1');
-  const adv2 = document.getElementById('adv2');
-  if (adv1) adv1.value = values[0];
-  if (adv2) adv2.value = values[1];
+  const maxDepth = document.getElementById('max-allowed-depth');
+  const maxStates = document.getElementById('max-game-states');
+  if (maxDepth) maxDepth.value = values[0];
+  if (maxStates) maxStates.value = values[1];
 }
 
 // Middle button hook
@@ -125,7 +127,7 @@ middleButton.addEventListener('click', () => {
     const freeSlotString = standardValues[11];
     userGameState = GameState.initFromColumnsStringArray(columnStrings, freeSlotString);
   } catch (e) {
-    showErrorMode(["Errors found!",].concat(e));
+    showErrorGameState(["Errors found!",].concat(e));
     errorFound = true;
   }
 
@@ -166,13 +168,13 @@ resultButton.addEventListener('click', () => {
 
   console.log("Result button clicked!");
   if (solutionMoveSets === null){
-    setResults("No solution Found. :(", `Deepest Search Depth: ${recursionMonitor.deepestDepth}    Total Game States Checked: ${recursionMonitor.checkedStates}`, []);
+    setResults("No solution Found. :(", `Deepest Search Depth: ${recursionMonitor.deepestDepth}    Total Unique Game States Checked: ${recursionMonitor.checkedStates}`, []);
   } else {
     const solutionSteps = [] = [];
     for (const solutionMoveSet of solutionMoveSets) {
       solutionSteps.push(solutionMoveSet.description);
     }
-    setResults("Solution found! :)", `Deepest Search Depth: ${recursionMonitor.deepestDepth}    Total Game States Checked: ${recursionMonitor.checkedStates}`, solutionSteps);
+    setResults("Solution found! :)", `Deepest Search Depth: ${recursionMonitor.deepestDepth}    Total Unique Game States Checked: ${recursionMonitor.checkedStates}`, solutionSteps);
   }
 
 });
@@ -287,7 +289,7 @@ function setDisplayValsFromGameState(gameState) {
 
     const columnStringArrays = gameState.getColumnStringArrays();
 
-    showValidMode(topVals, columnStringArrays)
+    showValidGameState(topVals, columnStringArrays)
 }
 
 // Solver Logic
@@ -1591,7 +1593,7 @@ class GameState {
             return null;
         }
 
-        if (checkedStatesSet.size > maxAllowedStates) {
+        if (checkedStatesSet.size >= maxAllowedStates) {
             return null;
         }
 
@@ -1894,7 +1896,7 @@ let userGameState = null;
 
 // test();
 const INITIAL_INPUT_VALS = TRY_4;
-setStandardInputValues(INITIAL_INPUT_VALS);
+setStandardInputValues(TEST_VALS_DEMO_FIXED);
 setAdvancedInputValues(["500", "10000"])
 
 console.log(getConfirmationValues());
