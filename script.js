@@ -328,7 +328,7 @@ class Card {
         const cardSuit = cleanCardStr.substring(cardStr.length - 1);
         const cardVal = cleanCardStr.substring(0, cardStr.length - 1);
 
-        let intVal = -1;
+        let intVal;
         if (cardVal === 'j') {
             intVal = 11;
         } else if (cardVal === 'q') {
@@ -348,7 +348,7 @@ class Card {
 
 
     toString() {
-        let valStr = '';
+        let valStr;
         if (Card.COLOR_SUITS.includes(this.suit)) {
             if (this.intVal === 11) {
                 valStr = 'J';
@@ -518,7 +518,7 @@ class CardPile {
         }
     }
 
-    canReceiveCardFreeSlot(card) {
+    canReceiveCardFreeSlot() {
         /**
          * @param {Card} card
          */
@@ -583,7 +583,7 @@ class CardPile {
             case "tarotLarge":
                 return this.canReceiveCardTarotLarge(card);
             case "freeSlot":
-                return this.canReceiveCardFreeSlot(card);
+                return this.canReceiveCardFreeSlot();
             case "suitPile":
                 return this.canReceiveCardSuitPile(card);
             default:
@@ -798,9 +798,6 @@ class CardPile {
 
     }
 }
-
-// GameState Class
-let cellPadding = 5;
 
 class GameState {
     constructor(columnPilesArray, tarotSmallPile, tarotLargePile, freeSlotPile,
@@ -1224,7 +1221,7 @@ class GameState {
 
         if (destPile.canReceiveCard(bottomCard)) {
             const destDesc = destPile.topCardStr();
-            let desc = "";
+            let desc;
             if (GameState.COMMIT_PILE_LABELS.includes(destPileLabel)) {
                 desc = `Move ${stackSize} card stack (${topCard} - ${bottomCard}) from ${originUILabel} to empty column ${emptyColumnUILabel} then AUTO MOVE to ${destUILabel}`
             } else {
@@ -1345,7 +1342,7 @@ class GameState {
     * possibleMoves() {
         const firstEmptyColumnLabel = this.firstEmptyColumn();
         const freeSlotIsEmpty = this.freeSlotIsEmpty();
-        let movePriority = 0;
+        let movePriority;
 
         // 1. If there's an empty column,
         // check if the bottom card of each column top stack could be commited to a tarot pile.
@@ -1597,6 +1594,10 @@ class GameState {
             return null;
         }
 
+        const preID = this.getIDStr();
+        if (checkedStatesSet.has(preID)) {
+          return null;
+        }
 
         this.processForcedMoves();
 
@@ -1609,6 +1610,7 @@ class GameState {
             return null;
         }
 
+        checkedStatesSet.add(preID);
         checkedStatesSet.add(postID);
         recursionMonitor.updateCheckedStates(checkedStatesSet.size);
 
@@ -1706,6 +1708,10 @@ class RecursionMonitor{
   }
 }
 
+
+
+// Various values for testing
+/*
 const TEST_VALS_EMPTY = [
   "",
   "",
@@ -1719,12 +1725,12 @@ const TEST_VALS_EMPTY = [
   "",
   "",
   "",
-]
+];
 
 const TEST_VALS_SIMPLE = [
     "9t qr kr qb kb", "1t 2t 3t 5t 4t", "jg qg kg 10g 9g 7g 8g", "6t 7t 8t", "", "", "", "", "", "", "", "",
 
-]
+];
 
 const TEST_VALS_DEMO = [
     "2r 5g 7t qy 4g 4r 12t 11t",
@@ -1739,22 +1745,7 @@ const TEST_VALS_DEMO = [
     "9b 8b",
     "14t qr 7g jg 10r kg kb",
     ""
-]
-
-const TEST_VALS_DEMO_FIXED = [
-    "2r 5g 7t qy 4g 4r 12t 11t",
-    "10g 13t jb 5r 15t 8t",
-    "8y 9y",
-    "10b 19t 6g 6r ky jy",
-    "10y 3y 7y qg 5y 10t 18t 17t 16t",
-    "6y",
-    "9g 9t",
-    "9r 8r 7r",
-    "7b 8g qb kr 4y jr qr",
-    "9b 8b",
-    "14t 3r 7g jg 10r kg kb",
-    ""
-]
+];
 
 const TRY1_STARTING_CARDS = [
     "6t 6b ky 17t 6g 10y 7g",
@@ -1769,7 +1760,7 @@ const TRY1_STARTING_CARDS = [
     "kg 5r 8b 10b 3b 21t 4b",
     "14t qb 4y 8g 3y 2g qy",
     "",
-]
+];
 
 const TRY2_STARTING_CARDS = [
     "3b 9t 5g 4g 4b jg qy",
@@ -1784,7 +1775,7 @@ const TRY2_STARTING_CARDS = [
     "19t 6r kb qr 7g ky 4y",
     "3t 9y 7b 2g 16t 4t 11t",
     "",
-]
+];
 
 const TRY3 = [
     "2r 10y 6y 0t 9r 5y 8t",
@@ -1799,7 +1790,7 @@ const TRY3 = [
     "1t jy 8b kr qg 2y 20t",
     "6g ky 18t 10t 9g 3y 11t",
     "",
-]
+];
 
 const TEST_7 = [
     "5b",
@@ -1815,7 +1806,7 @@ const TEST_7 = [
     "",
     "4t",
 
-]
+];
 
 const TRY_4 = [
   "4g 6r 10t 8b 15t qb 18t",
@@ -1830,73 +1821,35 @@ const TRY_4 = [
   "2b kr 1t 2r 13t 5y 9g",
   "jy 3r 10g jb 10b 4b 3b",
   "",
-]
-let deepestDepth = 0;
-let checkedSetsSize = 0;
+];
+ */
+
 let priorityTracker = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,]
-
-function test() {
-
-    // const inputVals = getInputValues();
-    // const columnTextArray = inputVals.slice(0, 11);
-    // const freeSlotString = inputVals[11]
-
-    const testArray = TRY_4;
-    const gs = GameState.initFromColumnsStringArray(testArray.slice(0, 11), testArray[11]);
-
-
-    // setDisplayValsFromGameState(gs);
-    // const solveResult = gs.solve(500, 100000);
-    // console.log(solveResult);
-
-    // for (const nextMove of gs.possibleMoves()){
-    //     const gsClone = gs.clone();
-    //     console.log(nextMove);
-    //     gsClone.executeMoveSet(nextMove);
-    //     console.log(gsClone);
-    //     console.log(gsClone.columnPilesArray[0].isEmpty());
-    // }
-
-    const textdisp = gs.getDisplayTextArray();
-    for (const line of textdisp) {
-        console.log(line);
-    }
-
-    for (const move of gs.possibleMoves()) {
-        console.log(move);
-    }
-
-    const result = gs.solve(150, 100000);
-    console.log(result);
-
-    if (result) {
-        let moveNum = 1;
-        for (const move of result) {
-            console.log(moveNum + ". " + move.description);
-            moveNum++;
-        }
-    }
-
-
-    console.log(deepestDepth);
-    console.log(checkedSetsSize);
-    for (let i = -1; i < priorityTracker.length; i++) {
-      console.log(i + ": " +priorityTracker[i]);
-    }
-
-
-    // for (const column of gs.columnPilesArray){
-    //     console.log(column.getTopStack());
-    //     console.log(column.getCardBelowTopStack());
-    // }
-
-}
-
 let userGameState = null;
 
-// test();
-const INITIAL_INPUT_VALS = TRY_4;
+const TEST_VALS_DEMO_FIXED = [
+  "2r 5g 7t qy 4g 4r 12t 11t",
+  "10g 13t jb 5r 15t 8t",
+  "8y 9y",
+  "10b 19t 6g 6r ky jy",
+  "10y 3y 7y qg 5y 10t 18t 17t 16t",
+  "6y",
+  "9g 9t",
+  "9r 8r 7r",
+  "7b 8g qb kr 4y jr qr",
+  "9b 8b",
+  "14t 3r 7g jg 10r kg kb",
+  ""
+];
+
 setStandardInputValues(TEST_VALS_DEMO_FIXED);
-setAdvancedInputValues(["500", "10000"])
+setAdvancedInputValues(["250", "30000"])
 
 console.log(getConfirmationValues());
+
+
+/* Seems to be working pretty well.
+Still need to clean up a lot of the HTML functions.
+There's room for optimizing possible moves of priority 11 and greater
+It flips a lot of stacks to an empty column, just to immediately undo them
+ */
