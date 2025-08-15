@@ -3,23 +3,23 @@
 
 // Handles the button between Panel 1 and Panel 2
 function handleButtonClick() {
-  alert("Middle Action Button Clicked");
-  const inputVals = getInputValues();
-  const columnStringsArray = inputVals.slice(0, 11);
-  const freeSlotString = inputVals[11];
+    alert("Middle Action Button Clicked");
+    const inputVals = getInputValues();
+    const columnStringsArray = inputVals.slice(0, 11);
+    const freeSlotString = inputVals[11];
 
-  const newGameState = GameState.initFromColumnsStringArray(columnStringsArray, freeSlotString);
-  setDisplayValsFromGameState(newGameState);
+    const newGameState = GameState.initFromColumnsStringArray(columnStringsArray, freeSlotString);
+    setDisplayValsFromGameState(newGameState);
 }
 
 // Handles the button below Panel 1 and Panel 2
 function handleBelowTopButtonClick() {
-  alert("Button Below Top Panels Clicked");
+    alert("Button Below Top Panels Clicked");
 }
 
 // Handles the button below Panel 3
 function handleBelowPanel3ButtonClick() {
-  alert("Button Below Panel 3 Clicked");
+    alert("Button Below Panel 3 Clicked");
 }
 
 // Takes a string
@@ -27,159 +27,159 @@ function handleBelowPanel3ButtonClick() {
 // reduces and instances of multiple spaces to a single sace
 // makes it lowercase
 function cleanInputString(inputString) {
-  let updatedString = inputString;
-  updatedString = updatedString.trim();
-  updatedString = updatedString.replace(/  +/g, ' ');
-  updatedString = updatedString.toLowerCase();
+    let updatedString = inputString;
+    updatedString = updatedString.trim();
+    updatedString = updatedString.replace(/  +/g, ' ');
+    updatedString = updatedString.toLowerCase();
 
-  return updatedString;
+    return updatedString;
 }
 
 // Sets the content in the table of Panel 2, including the top row
 // topRowValues: array of 7 strings for the top row headers
 // columnsData: array of arrays for each column's content
 function setDisplayVals(topRowValues, columnsData) {
-  const table = document.querySelector(".panel-2 table");
-  const errorList = document.getElementById("panel2-error-list");
+    const table = document.querySelector(".panel-2 table");
+    const errorList = document.getElementById("panel2-error-list");
 
-  // Show the table and hide errors
-  table.style.display = "table";
-  if (errorList) errorList.style.display = "none";
+    // Show the table and hide errors
+    table.style.display = "table";
+    if (errorList) errorList.style.display = "none";
 
-  // Update the top row headers
-  const thead = table.querySelector("thead tr");
-  thead.innerHTML = "";
-  topRowValues.forEach(value => {
-    const th = document.createElement("th");
-    th.textContent = value;
-    thead.appendChild(th);
-  });
-
-  // Update the columns below
-  const tableColumns = table.querySelector(".table-columns");
-  tableColumns.innerHTML = "";
-
-  columnsData.forEach((col, index) => {
-    const columnDiv = document.createElement("div");
-    columnDiv.className = "column";
-
-    const label = document.createElement("div");
-    label.className = "column-label";
-    label.textContent = `Col ${index + 1}`;
-    columnDiv.appendChild(label);
-
-    col.forEach(item => {
-      const cell = document.createElement("div");
-      cell.className = "cell";
-      cell.textContent = item;
-      columnDiv.appendChild(cell);
+    // Update the top row headers
+    const thead = table.querySelector("thead tr");
+    thead.innerHTML = "";
+    topRowValues.forEach(value => {
+        const th = document.createElement("th");
+        th.textContent = value;
+        thead.appendChild(th);
     });
 
-    tableColumns.appendChild(columnDiv);
-  });
+    // Update the columns below
+    const tableColumns = table.querySelector(".table-columns");
+    tableColumns.innerHTML = "";
+
+    columnsData.forEach((col, index) => {
+        const columnDiv = document.createElement("div");
+        columnDiv.className = "column";
+
+        const label = document.createElement("div");
+        label.className = "column-label";
+        label.textContent = `Col ${index + 1}`;
+        columnDiv.appendChild(label);
+
+        col.forEach(item => {
+            const cell = document.createElement("div");
+            cell.className = "cell";
+            cell.textContent = item;
+            columnDiv.appendChild(cell);
+        });
+
+        tableColumns.appendChild(columnDiv);
+    });
 }
 
 
 function setDisplayValsFromGameState(gameState) {
 
-  const tarotSmall = gameState.tarotSmallPile.lookTopCard();
-  const tarotLarge = gameState.tarotLargePile.lookTopCard();
-  const freeSlot = gameState.freeSlotPile.lookTopCard();
-  // yrgb
-  const suitY = gameState.suitYPile.lookTopCard();
-  const suitR = gameState.suitRPile.lookTopCard();
-  const suitG = gameState.suitGPile.lookTopCard();
-  const suitB = gameState.suitBPile.lookTopCard();
+    const tarotSmall = gameState.tarotSmallPile.lookTopCard();
+    const tarotLarge = gameState.tarotLargePile.lookTopCard();
+    const freeSlot = gameState.freeSlotPile.lookTopCard();
+    // yrgb
+    const suitY = gameState.suitYPile.lookTopCard();
+    const suitR = gameState.suitRPile.lookTopCard();
+    const suitG = gameState.suitGPile.lookTopCard();
+    const suitB = gameState.suitBPile.lookTopCard();
 
-  const topVals = [];
+    const topVals = [];
 
-  if (tarotSmall === null){
-    topVals.push("----");
-  } else {
-    topVals.push(tarotSmall.toString())
-  }
-  if (tarotLarge === null){
-    topVals.push("----");
-  } else {
-    topVals.push(tarotLarge.toString())
-  }
+    if (tarotSmall === null) {
+        topVals.push("----");
+    } else {
+        topVals.push(tarotSmall.toString())
+    }
+    if (tarotLarge === null) {
+        topVals.push("----");
+    } else {
+        topVals.push(tarotLarge.toString())
+    }
 
-  if (freeSlot === null){
-    topVals.push("[    ]");
-  } else {
-    topVals.push(freeSlot.toString())
-  }
+    if (freeSlot === null) {
+        topVals.push("[    ]");
+    } else {
+        topVals.push(freeSlot.toString())
+    }
 
-  if (suitY === null){
-    topVals.push("----");
-  } else {
-    topVals.push(suitY.toString())
-  }
-  if (suitR === null){
-    topVals.push("----");
-  } else {
-    topVals.push(suitR.toString())
-  }
-  if (suitG === null){
-    topVals.push("----");
-  } else {
-    topVals.push(suitG.toString())
-  }
-  if (suitB === null){
-    topVals.push("----");
-  } else {
-    topVals.push(suitB.toString())
-  }
+    if (suitY === null) {
+        topVals.push("----");
+    } else {
+        topVals.push(suitY.toString())
+    }
+    if (suitR === null) {
+        topVals.push("----");
+    } else {
+        topVals.push(suitR.toString())
+    }
+    if (suitG === null) {
+        topVals.push("----");
+    } else {
+        topVals.push(suitG.toString())
+    }
+    if (suitB === null) {
+        topVals.push("----");
+    } else {
+        topVals.push(suitB.toString())
+    }
 
-  const columnStringArrays = gameState.getColumnStringArrays();
+    const columnStringArrays = gameState.getColumnStringArrays();
 
-  setDisplayVals(topVals, columnStringArrays);
+    setDisplayVals(topVals, columnStringArrays);
 }
 
 // Hides the table and shows error messages in Panel 2
 // errors: array of strings
 function showPanel2Errors(errors) {
-  const table = document.querySelector(".panel-2 table");
-  let errorList = document.getElementById("panel2-error-list");
+    const table = document.querySelector(".panel-2 table");
+    let errorList = document.getElementById("panel2-error-list");
 
-  // Hide the table
-  table.style.display = "none";
+    // Hide the table
+    table.style.display = "none";
 
-  // Create the error list if it doesn't exist
-  if (!errorList) {
-    errorList = document.createElement("ul");
-    errorList.id = "panel2-error-list";
-    errorList.style.color = "red";
-    errorList.style.padding = "10px";
-    errorList.style.marginTop = "10px";
-    document.querySelector(".panel-2").appendChild(errorList);
-  }
+    // Create the error list if it doesn't exist
+    if (!errorList) {
+        errorList = document.createElement("ul");
+        errorList.id = "panel2-error-list";
+        errorList.style.color = "red";
+        errorList.style.padding = "10px";
+        errorList.style.marginTop = "10px";
+        document.querySelector(".panel-2").appendChild(errorList);
+    }
 
-  // Show and populate the error list
-  errorList.style.display = "block";
-  errorList.innerHTML = "";
-  errors.forEach(error => {
-    const li = document.createElement("li");
-    li.textContent = error;
-    errorList.appendChild(li);
-  });
+    // Show and populate the error list
+    errorList.style.display = "block";
+    errorList.innerHTML = "";
+    errors.forEach(error => {
+        const li = document.createElement("li");
+        li.textContent = error;
+        errorList.appendChild(li);
+    });
 }
 
 // Sets the ordered list in Panel 3
 function setPanel3Text(items) {
-  const list = document.querySelector(".panel-3 ol");
-  list.innerHTML = "";
-  items.forEach(item => {
-    const li = document.createElement("li");
-    li.textContent = item;
-    list.appendChild(li);
-  });
+    const list = document.querySelector(".panel-3 ol");
+    list.innerHTML = "";
+    items.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        list.appendChild(li);
+    });
 }
 
 // Gets all values from the text boxes in Panel 1 and returns them as an array of strings
 function getInputValues() {
-  const inputs = document.querySelectorAll(".input-panel input[type='text']");
-  return Array.from(inputs).map(input => input.value);
+    const inputs = document.querySelectorAll(".input-panel input[type='text']");
+    return Array.from(inputs).map(input => input.value);
 }
 
 // Solver Logic
@@ -187,120 +187,120 @@ function getInputValues() {
 
 // Card class
 class Card {
-  static COLOR_SUITS = ['y', 'r', 'g', 'b'];
+    static COLOR_SUITS = ['y', 'r', 'g', 'b'];
 
-  constructor(intVal, cardSuit) {
-      this.intVal = intVal;
-      this.suit = cardSuit.toLowerCase().trim();
+    constructor(intVal, cardSuit) {
+        this.intVal = intVal;
+        this.suit = cardSuit.toLowerCase().trim();
 
-      if (!(Number.isInteger(this.intVal))){
-          throw new Error(`Error - tried to create card with invalid integer ${intVal}`);
-      }
+        if (!(Number.isInteger(this.intVal))) {
+            throw new Error(`Error - tried to create card with invalid integer ${intVal}`);
+        }
 
-      if (this.suit === 't'){
-          if (!(0 <= this.intVal <= 21)) {
-              throw new Error(`Error - Tarot card cannot have value ${this.intVal}`)
-          }
-      } else if (Card.COLOR_SUITS.includes(this.suit)){
-          if (!(1 <= this.intVal <= 13)) {
-              throw new Error(`Error - Color Suit card cannot have value ${this.intVal}`)
-          }
-      }
+        if (this.suit === 't') {
+            if (!(0 <= this.intVal <= 21)) {
+                throw new Error(`Error - Tarot card cannot have value ${this.intVal}`)
+            }
+        } else if (Card.COLOR_SUITS.includes(this.suit)) {
+            if (!(1 <= this.intVal <= 13)) {
+                throw new Error(`Error - Color Suit card cannot have value ${this.intVal}`)
+            }
+        }
 
-  }
-
-  static newCardFromString(cardStr) {
-    const cleanCardStr = cleanInputString(cardStr);
-    const cardSuit = cleanCardStr.substring(cardStr.length - 1);
-    const cardVal = cleanCardStr.substring(0, cardStr.length - 1);
-
-    let intVal = -1;
-    if (cardVal === 'j') {
-      intVal = 11;
-    } else if (cardVal === 'q') {
-      intVal = 12;
-    } else if (cardVal === 'k') {
-      intVal = 13;
-    } else {
-      intVal = parseInt(cardVal);
     }
 
-    try {
-      return new Card(intVal, cardSuit);
-    } catch (error) {
-      throw new Error(`Invalid cardstr - ${cardStr}`);
+    static newCardFromString(cardStr) {
+        const cleanCardStr = cleanInputString(cardStr);
+        const cardSuit = cleanCardStr.substring(cardStr.length - 1);
+        const cardVal = cleanCardStr.substring(0, cardStr.length - 1);
+
+        let intVal = -1;
+        if (cardVal === 'j') {
+            intVal = 11;
+        } else if (cardVal === 'q') {
+            intVal = 12;
+        } else if (cardVal === 'k') {
+            intVal = 13;
+        } else {
+            intVal = parseInt(cardVal);
+        }
+
+        try {
+            return new Card(intVal, cardSuit);
+        } catch (error) {
+            throw new Error(`Invalid cardstr - ${cardStr}`);
+        }
     }
-  }
 
 
-  toString() {
-    let valStr = '';
-    if (Card.COLOR_SUITS.includes(this.suit)) {
-      if (this.intVal === 11) {
-        valStr = 'J';
-      } else if (this.intVal === 12) {
-        valStr = 'Q';
-      } else if (this.intVal === 13) {
-        valStr = 'K';
-      } else {
-        valStr = this.intVal.toString();
-      }
-    } else {
-      valStr = this.intVal.toString();
+    toString() {
+        let valStr = '';
+        if (Card.COLOR_SUITS.includes(this.suit)) {
+            if (this.intVal === 11) {
+                valStr = 'J';
+            } else if (this.intVal === 12) {
+                valStr = 'Q';
+            } else if (this.intVal === 13) {
+                valStr = 'K';
+            } else {
+                valStr = this.intVal.toString();
+            }
+        } else {
+            valStr = this.intVal.toString();
+        }
+        return valStr + this.suit.toUpperCase();
     }
-    return valStr + this.suit.toUpperCase();
-  }
 
-  static canPlaceCard(topCard, bottomCard) {
-    /**
-     * @param {Card} topCard
-     * @param {Card} bottomCard
-     */
-    if (topCard.suit !== bottomCard.suit) {
-      return false;
+    static canPlaceCard(topCard, bottomCard) {
+        /**
+         * @param {Card} topCard
+         * @param {Card} bottomCard
+         */
+        if (topCard.suit !== bottomCard.suit) {
+            return false;
+        }
+        const valDiff = topCard.intVal - bottomCard.intVal;
+        return valDiff === 1 || valDiff === -1;
     }
-    const valDiff = topCard.intVal - bottomCard.intVal;
-    return valDiff === 1 || valDiff === -1;
-  }
 
-  static sameCard(topCard, bottomCard) {
-    return (
-      topCard.suit === bottomCard.suit &&
-      topCard.intVal === bottomCard.intVal
-    );
-  }
-
-  getNextLowerCard() {
-    if (this.suit === 't') {
-      if (this.intVal === 0) {
-        return null;
-      } else {
-        return new Card(this.intVal - 1, this.suit);
-      }
-    } else {
-      if (this.intVal === 1) {
-        return null;
-      } else {
-        return new Card(this.intVal - 1, this.suit);
-      }
+    static sameCard(topCard, bottomCard) {
+        return (
+            topCard.suit === bottomCard.suit &&
+            topCard.intVal === bottomCard.intVal
+        );
     }
-  }
 
-  getNextHigherCard() {
-    if (this.suit === 't') {
-      if (this.intVal === 21) {
-        return null;
-      } else {
-        return new Card(this.intVal + 1, this.suit);
-      }
-    } else {
-      if (this.intVal === 13) {
-        return null;
-      } else {
-        return new Card(this.intVal + 1, this.suit);
-      }
+    getNextLowerCard() {
+        if (this.suit === 't') {
+            if (this.intVal === 0) {
+                return null;
+            } else {
+                return new Card(this.intVal - 1, this.suit);
+            }
+        } else {
+            if (this.intVal === 1) {
+                return null;
+            } else {
+                return new Card(this.intVal - 1, this.suit);
+            }
+        }
     }
-  }
+
+    getNextHigherCard() {
+        if (this.suit === 't') {
+            if (this.intVal === 21) {
+                return null;
+            } else {
+                return new Card(this.intVal + 1, this.suit);
+            }
+        } else {
+            if (this.intVal === 13) {
+                return null;
+            } else {
+                return new Card(this.intVal + 1, this.suit);
+            }
+        }
+    }
 }
 
 // CardPile class
@@ -310,7 +310,7 @@ class CardPile {
 
     constructor(pileType, suit, topCard = null, cardArray = null) {
 
-        if (!CardPile.PILE_TYPES.includes(pileType)){
+        if (!CardPile.PILE_TYPES.includes(pileType)) {
             throw new Error(`Invalid pile type ${pileType}`);
         }
         if (pileType === "suitPile" && !CardPile.COLOR_SUITS.includes(suit)) {
@@ -323,9 +323,9 @@ class CardPile {
         this.cardArray = cardArray;
     }
 
-    lookTopCard(){
-        if (this.pileType === "column"){
-            if (this.cardArray.length === 0){
+    lookTopCard() {
+        if (this.pileType === "column") {
+            if (this.cardArray.length === 0) {
                 return null;
             } else {
                 return this.cardArray[this.cardArray.length - 1];
@@ -335,78 +335,78 @@ class CardPile {
         }
     }
 
-    popTopCard(){
-      if (this.pileType === "column"){
-        return this.cardArray.pop();
-      } else if (this.pileType === "freeSlot"){
-        const topCard = this.topCard;
-        this.topCard = null;
-        return topCard;
-      } else {
-        throw new Error(`Can't pop from ${this.pileType}`);
-      }
+    popTopCard() {
+        if (this.pileType === "column") {
+            return this.cardArray.pop();
+        } else if (this.pileType === "freeSlot") {
+            const topCard = this.topCard;
+            this.topCard = null;
+            return topCard;
+        } else {
+            throw new Error(`Can't pop from ${this.pileType}`);
+        }
     }
 
-    canReceiveCardColumn(card){
+    canReceiveCardColumn(card) {
         /**
          * @param {Card} card
          */
-        if (this.pileType !== "column"){
+        if (this.pileType !== "column") {
             throw new Error(`Tried to call canReceiveCardColumn on a ${this.pileType} pile`);
         }
         const pileTopCard = this.lookTopCard();
-        if (pileTopCard === null){
+        if (pileTopCard === null) {
             return true;
         } else {
             return Card.canPlaceCard(card, pileTopCard);
         }
     }
 
-    canReceiveCardFreeSlot (card){
+    canReceiveCardFreeSlot(card) {
         /**
          * @param {Card} card
          */
-        if (this.pileType !== "freeSlot"){
+        if (this.pileType !== "freeSlot") {
             throw new Error(`Tried to call canReceiveFreeSlot on a ${this.pileType} pile`);
         }
         return this.lookTopCard() === null;
     }
 
-    canReceiveCardTarotSmall (card){
+    canReceiveCardTarotSmall(card) {
         /**
          * @param {Card} card
          */
-        if (this.pileType !== "tarotSmall"){
+        if (this.pileType !== "tarotSmall") {
             throw new Error(`Tried to call canReceiveCardTarotSmall on a ${this.pileType} pile`);
         }
         const pileTopCard = this.lookTopCard();
-        if (pileTopCard === null){
+        if (pileTopCard === null) {
             return (card.intVal === 0 && card.suit === "t");
         } else {
             return Card.canPlaceCard(card, pileTopCard)
         }
     }
 
-    canReceiveCardTarotLarge (card){
+    canReceiveCardTarotLarge(card) {
         /**
          * @param {Card} card
          */
-        if (this.pileType !== "tarotLarge"){
+        if (this.pileType !== "tarotLarge") {
             throw new Error(`Tried to call canReceiveCardTarotLarge on a ${this.pileType} pile`);
         }
         const pileTopCard = this.lookTopCard();
-        if (pileTopCard === null){
+        if (pileTopCard === null) {
             return (card.intVal === 21 && card.suit === "t");
         } else {
             return Card.canPlaceCard(card, pileTopCard)
         }
     }
 
-    canReceiveCardSuitPile (card){
+    canReceiveCardSuitPile(card) {
         /**
          * @param {Card} card
          */
-        if (this.pileType !== "suitPile"){
+        if (this.pileType !== "suitPile") {
             throw new Error(`Tried to call canReceiveCardSuitPile on a ${this.pileType} pile`);
         }
 
@@ -418,8 +418,8 @@ class CardPile {
         }
     }
 
-    canReceiveCard (card){
-        switch (this.pileType){
+    canReceiveCard(card) {
+        switch (this.pileType) {
             case "column":
                 return this.canReceiveCardColumn(card);
             case "tarotSmall":
@@ -435,37 +435,37 @@ class CardPile {
         }
     }
 
-    clone(){
+    clone() {
         let cloneCardArray = null;
-        if (this.cardArray !== null){
+        if (this.cardArray !== null) {
             cloneCardArray = this.cardArray.slice();
         }
 
         return new CardPile(
-          this.pileType,
-          this.suit,
-          this.topCard,
-          cloneCardArray,
+            this.pileType,
+            this.suit,
+            this.topCard,
+            cloneCardArray,
         );
     }
 
-    placeCard(card){
-        if (!this.canReceiveCard(card)){
+    placeCard(card) {
+        if (!this.canReceiveCard(card)) {
             throw new Error(`Error: Tried to place ${card} on ${this.pileType} - ${this.lookTopCard()}`);
         }
-        if (this.pileType === "column"){
+        if (this.pileType === "column") {
             this.cardArray.push(card);
         } else {
             this.topCard = card;
         }
     }
 
-    static initColumnPileFromString(initString){
+    static initColumnPileFromString(initString) {
         const cleanInitString = cleanInputString(initString);
         const cardArray = [];
-        if (cleanInitString.length > 0){
+        if (cleanInitString.length > 0) {
             const cardStringArray = cleanInitString.split(" ");
-            for (const cardStr of cardStringArray){
+            for (const cardStr of cardStringArray) {
                 const newCard = Card.newCardFromString(cardStr);
                 cardArray.push(newCard);
             }
@@ -474,23 +474,23 @@ class CardPile {
 
     }
 
-    static initFreeSlotPileFromString(freeSlotCardStrRaw){
-      const cleanFreeSlotCardStr = cleanInputString(freeSlotCardStrRaw);
-      if (cleanFreeSlotCardStr === "" || cleanFreeSlotCardStr === null) {
-        return new CardPile('freeSlot', null, null, null);
-      } else {
-        const freeSlotCard = Card.newCardFromString(cleanFreeSlotCardStr);
-        return new CardPile('freeSlot', null, freeSlotCard, null);
-      }
+    static initFreeSlotPileFromString(freeSlotCardStrRaw) {
+        const cleanFreeSlotCardStr = cleanInputString(freeSlotCardStrRaw);
+        if (cleanFreeSlotCardStr === "" || cleanFreeSlotCardStr === null) {
+            return new CardPile('freeSlot', null, null, null);
+        } else {
+            const freeSlotCard = Card.newCardFromString(cleanFreeSlotCardStr);
+            return new CardPile('freeSlot', null, freeSlotCard, null);
+        }
     }
 
-    toString(){
-      const cardStrArray = []
-      for (const card of this.cardArray){
-        cardStrArray.push(card.toString());
-      }
+    toString() {
+        const cardStrArray = []
+        for (const card of this.cardArray) {
+            cardStrArray.push(card.toString());
+        }
 
-      return cardStrArray.join(" ");
+        return cardStrArray.join(" ");
 
     }
 
@@ -502,95 +502,111 @@ class CardPile {
     the free slot will always return a 0 or 1 stack size
      */
     getTopStack() {
-      if (!(this.pileType === "column" || this.pileType ==="freeSlot")){
-        throw new Error(`Tried to check for top stack on ${this.pileType}`);
-      }
+        if (!(this.pileType === "column" || this.pileType === "freeSlot")) {
+            throw new Error(`Tried to check for top stack on ${this.pileType}`);
+        }
 
-      if (this.pileType === "freeSlot"){
-        if (this.isEmpty()) {
-          return [0, null, null];
+        if (this.pileType === "freeSlot") {
+            if (this.isEmpty()) {
+                return [0, null, null];
+            } else {
+                return [1, this.topCard, this.topCard];
+            }
+
+        } else if (this.pileType === "column") {
+            if (this.cardArray.length === 0) {
+                return [0, null, null];
+            }
+
+            const topCard = this.lookTopCard();
+            if (this.cardArray.length === 1) {
+                return [1, topCard, topCard];
+            }
+
+
+            let aboveCard = topCard;
+            let lowestCard = topCard
+            let stackSize = 1;
+            for (let i = this.cardArray.length - 2; i >= 0; i--) {
+                const belowCard = this.cardArray[i];
+                if (Card.canPlaceCard(aboveCard, belowCard)) {
+                    stackSize += 1;
+                    aboveCard = belowCard;
+                    lowestCard = belowCard;
+                } else {
+                    break;
+                }
+            }
+            return [stackSize, topCard, lowestCard];
         } else {
-          return [1, this.topCard, this.topCard];
+            throw new Error("Logic error");
         }
-
-      } else if (this.pileType === "column"){
-        if (this.cardArray.length === 0){
-          return [0, null, null];
-        }
-
-        const topCard = this.lookTopCard();
-        if (this.cardArray.length === 1){
-          return [1, topCard, topCard];}
-
-
-        let aboveCard = topCard;
-        let lowestCard = topCard
-        let stackSize = 1;
-        for (let i = this.cardArray.length -2;i >= 0; i--) {
-          const belowCard = this.cardArray[i];
-          if (Card.canPlaceCard(aboveCard, belowCard)) {
-            stackSize += 1;
-            aboveCard = belowCard;
-            lowestCard = belowCard;
-          } else {
-            break;
-          }
-        }
-        return [stackSize, topCard, lowestCard];
-      } else {
-        throw new Error("Logic error");
-      }
 
     }
 
-    countCardInPile(searchCard){
-      let cardCount = 0;
-      switch (this.pileType) {
-        case "column": {
-          for (const cardInCol of this.cardArray){
-            if (Card.sameCard(cardInCol, searchCard)) {
-              cardCount += 1;
-            }
-          }
+    /*
+    This gets the card immediately beneath the top stack of a column
+    Returns null if the column is empty or if all cards are part of the top stack
+     */
+    getCardBelowTopStack() {
+        if (this.pileType !== "column") {
+            throw new Error(`Tried to check for card below top stack on ${this.pileType}`);
+        }
+        const topStack = this.getTopStack();
+        const topStackSize = topStack[0];
+        if (this.cardArray.length <= topStackSize) return null;
+        return this.cardArray[this.cardArray.length - topStackSize - 1];
 
-          break;
+    }
+
+    countCardInPile(searchCard) {
+        let cardCount = 0;
+        switch (this.pileType) {
+            case "column": {
+                for (const cardInCol of this.cardArray) {
+                    if (Card.sameCard(cardInCol, searchCard)) {
+                        cardCount += 1;
+                    }
+                }
+
+                break;
+            }
+            case "tarotSmall": {
+                const pileTopVal = this.lookTopCard().intVal;
+                if (searchCard.intVal <= pileTopVal) {
+                    cardCount = 1;
+                }
+                break;
+            }
+            case "tarotLarge": {
+                const pileTopVal = this.lookTopCard().intVal;
+                if (searchCard.intVal >= pileTopVal) {
+                    cardCount = 1;
+                }
+                break;
+            }
+            case "freeSlot": {
+                if (this.lookTopCard() && (Card.sameCard(searchCard, this.lookTopCard()))) {
+                    cardCount = 1;
+                }
+                break;
+            }
+            case "suitPile": {
+                const pileTopVal = this.lookTopCard().intVal;
+                if (searchCard.suit === this.suit && searchCard.intVal <= pileTopVal) {
+                    cardCount = 1;
+                }
+                break;
+            }
+            default: {
+                throw new Error(`Cardpile as invalid type ${this.pileType}, can't search`)
+            }
         }
-        case "tarotSmall": {
-          const pileTopVal = this.lookTopCard().intVal;
-          if (searchCard.intVal <= pileTopVal) {
-            cardCount = 1;
-          }
-          break;
-        }
-        case "tarotLarge": {
-          const pileTopVal = this.lookTopCard().intVal;
-          if (searchCard.intVal >= pileTopVal) {
-            cardCount = 1;
-          }
-          break;
-        }
-        case "freeSlot": {
-          if (this.lookTopCard() && (Card.sameCard(searchCard, this.lookTopCard()))){
-            cardCount = 1;
-          }
-          break;
-        }
-        case "suitPile": {
-          const pileTopVal = this.lookTopCard().intVal;
-          if (searchCard.suit === this.suit && searchCard.intVal <= pileTopVal) {
-            cardCount = 1;
-          }
-          break;
-        }
-        default:{
-          throw new Error(`Cardpile as invalid type ${this.pileType}, can't search`)
-        }
-      }
-      return cardCount;
+        return cardCount;
     }
 
     isEmpty() {
-        if (this.pileType === "column"){
+        if (this.pileType === "column") {
             return this.cardArray.length === 0;
         } else {
             return this.lookTopCard() === null;
@@ -598,19 +614,19 @@ class CardPile {
     }
 
     columnToStringArray() {
-      const outStringArray = [];
-      for (const card of this.cardArray){
-        outStringArray.push(card.toString());
-      }
-      return outStringArray;
+        const outStringArray = [];
+        for (const card of this.cardArray) {
+            outStringArray.push(card.toString());
+        }
+        return outStringArray;
     }
 
-    columnToIDStr(){
+    columnToIDStr() {
         return this.cardArray.join("");
     }
 
-    lookCardAtRow(rowNum){
-        if (this.cardArray.length <= rowNum){
+    lookCardAtRow(rowNum) {
+        if (this.cardArray.length <= rowNum) {
             return null;
         } else {
             return this.cardArray[rowNum];
@@ -620,7 +636,7 @@ class CardPile {
     /*
     if a card on top, returns that card, otherwise "empty"
      */
-    topCardStr(){
+    topCardStr() {
         if (this.isEmpty()) return "empty";
         else return this.lookTopCard().toString();
 
@@ -631,68 +647,68 @@ class CardPile {
 let cellPadding = 5;
 
 class GameState {
-    constructor (columnPilesArray, tarotSmallPile, tarotLargePile, freeSlotPile,
-                 suitYPile, suitRPile, suitGPile, suitBPile) {
-      this.columnPilesArray = columnPilesArray;
-      this.tarotSmallPile = tarotSmallPile;
-      this.tarotLargePile = tarotLargePile;
-      this.freeSlotPile = freeSlotPile;
-      this.suitYPile = suitYPile;
-      this.suitRPile = suitRPile;
-      this.suitGPile = suitGPile;
-      this.suitBPile = suitBPile;
+    constructor(columnPilesArray, tarotSmallPile, tarotLargePile, freeSlotPile,
+                suitYPile, suitRPile, suitGPile, suitBPile) {
+        this.columnPilesArray = columnPilesArray;
+        this.tarotSmallPile = tarotSmallPile;
+        this.tarotLargePile = tarotLargePile;
+        this.freeSlotPile = freeSlotPile;
+        this.suitYPile = suitYPile;
+        this.suitRPile = suitRPile;
+        this.suitGPile = suitGPile;
+        this.suitBPile = suitBPile;
 
-      this.loggedMoveSets = [];
+        this.loggedMoveSets = [];
     }
 
     static COLUMN_LABELS = ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9", "c10", "c11"];
     static COMMIT_PILE_LABELS = ["tarotSmall", "tarotLarge", "suitY", "suitR", "suitG", "suitB"];
     static SUIT_PILE_LABELS = ["suitY", "suitR", "suitG", "suitB"];
 
-    static initFromColumnsStringArray(columnStringsArray, freeSlotString){
-      const columnPilesArray = [];
-      for (const columnString of columnStringsArray){
-        const nextColumnPile = CardPile.initColumnPileFromString(columnString);
-        columnPilesArray.push(nextColumnPile);
-      }
+    static initFromColumnsStringArray(columnStringsArray, freeSlotString) {
+        const columnPilesArray = [];
+        for (const columnString of columnStringsArray) {
+            const nextColumnPile = CardPile.initColumnPileFromString(columnString);
+            columnPilesArray.push(nextColumnPile);
+        }
 
-      const freeSlotPile = CardPile.initFreeSlotPileFromString(freeSlotString);
+        const freeSlotPile = CardPile.initFreeSlotPileFromString(freeSlotString);
 
-      const tarotPileSmall = new CardPile("tarotSmall", null);
-      const tarotPileLarge = new CardPile("tarotLarge", null);
-      const suitPileY = new CardPile("suitPile", "y");
-      const suitPileR = new CardPile("suitPile", "r");
-      const suitPileG = new CardPile("suitPile", "g");
-      const suitPileB = new CardPile("suitPile", "b");
+        const tarotPileSmall = new CardPile("tarotSmall", null);
+        const tarotPileLarge = new CardPile("tarotLarge", null);
+        const suitPileY = new CardPile("suitPile", "y");
+        const suitPileR = new CardPile("suitPile", "r");
+        const suitPileG = new CardPile("suitPile", "g");
+        const suitPileB = new CardPile("suitPile", "b");
 
-      const newGameState = new GameState(columnPilesArray,
-        tarotPileSmall, tarotPileLarge, freeSlotPile,
-        suitPileY, suitPileR, suitPileG, suitPileB);
-      newGameState.initTopPiles();
-      newGameState.validate();
-      return newGameState
+        const newGameState = new GameState(columnPilesArray,
+            tarotPileSmall, tarotPileLarge, freeSlotPile,
+            suitPileY, suitPileR, suitPileG, suitPileB);
+        newGameState.initTopPiles();
+        newGameState.validate();
+        return newGameState
 
     }
 
-    countCardInColumnsAndFree(searchCard){
-      let count = 0;
-      for (const columnPile of this.columnPilesArray) {
-        count += columnPile.countCardInPile(searchCard);
-      }
-      count += this.freeSlotPile.countCardInPile(searchCard);
-      return count;
+    countCardInColumnsAndFree(searchCard) {
+        let count = 0;
+        for (const columnPile of this.columnPilesArray) {
+            count += columnPile.countCardInPile(searchCard);
+        }
+        count += this.freeSlotPile.countCardInPile(searchCard);
+        return count;
     }
 
-    isCardCommitted(searchCard){
-        switch(searchCard.suit){
+    isCardCommitted(searchCard) {
+        switch (searchCard.suit) {
             case "t":
-                if (!(this.tarotSmallPile.isEmpty())){
-                    if (this.tarotSmallPile.lookTopCard().intVal >= searchCard.intVal){
+                if (!(this.tarotSmallPile.isEmpty())) {
+                    if (this.tarotSmallPile.lookTopCard().intVal >= searchCard.intVal) {
                         return true;
                     }
                 }
-                if (!(this.tarotLargePile.isEmpty())){
-                    if (this.tarotLargePile.lookTopCard().intVal <= searchCard.intVal){
+                if (!(this.tarotLargePile.isEmpty())) {
+                    if (this.tarotLargePile.lookTopCard().intVal <= searchCard.intVal) {
                         return true;
                     }
                 }
@@ -716,13 +732,13 @@ class GameState {
         }
     }
 
-    validate(){
+    validate() {
         for (const suit of ["y", "r", "g", "b"]) {
             for (let val = 1; val <= 13; ++val) {
                 const searchCard = new Card(val, suit);
                 let count = 0;
                 count += this.countCardInColumnsAndFree(searchCard);
-                if (this.isCardCommitted(searchCard)) count ++;
+                if (this.isCardCommitted(searchCard)) count++;
                 if (count === 0) throw new Error(`Validation failed! ${searchCard} missing!`);
                 if (count > 1) throw new Error(`Validation failed! Found ${count} copies of ${searchCard}!`);
             }
@@ -731,692 +747,786 @@ class GameState {
             const searchCard = new Card(val, "t");
             let count = 0;
             count += this.countCardInColumnsAndFree(searchCard);
-            if (this.isCardCommitted(searchCard)) count ++;
+            if (this.isCardCommitted(searchCard)) count++;
             if (count === 0) throw new Error(`Validation failed! ${searchCard} missing!`);
             if (count > 1) throw new Error(`Validation failed! Found ${count} copies of ${searchCard}!`);
         }
         return true;
     }
 
-    findSmallestTarotCardInPlay(){
-      for (let i = 0; i <= 21; i++) {
-        const searchCard = new Card(i, 't');
-        if (this.countCardInColumnsAndFree(searchCard) >= 1) {
-          return searchCard;
+    findSmallestTarotCardInPlay() {
+        for (let i = 0; i <= 21; i++) {
+            const searchCard = new Card(i, 't');
+            if (this.countCardInColumnsAndFree(searchCard) >= 1) {
+                return searchCard;
+            }
         }
-      }
-      return null;
+        return null;
     }
 
-  findLargestTarotCardInPlay(){
-    for (let i = 21; i >= 0; i--) {
-      const searchCard = new Card(i, 't');
-      if (this.countCardInColumnsAndFree(searchCard) >= 1) {
-        return searchCard;
-      }
-    }
-    return null;
-  }
-
-  findSmallestSuitCardInPlay(suit){
-      const suitLower = suit.toLowerCase();
-      if (!Card.COLOR_SUITS.includes(suit)) {
-        throw new Error(`Invalid suit type ${ suit }`);
-      }
-      for (let i = 1; i <= 13; i++) {
-        const searchCard = new Card(i, suitLower);
-        if (this.countCardInColumnsAndFree(searchCard) >= 1){
-          return searchCard;
+    findLargestTarotCardInPlay() {
+        for (let i = 21; i >= 0; i--) {
+            const searchCard = new Card(i, 't');
+            if (this.countCardInColumnsAndFree(searchCard) >= 1) {
+                return searchCard;
+            }
         }
-      }
-      return null;
-  }
-
-  initTopPiles(){
-      const smallestTarotCardInPlay = this.findSmallestTarotCardInPlay();
-      const largestTarotCardInPlay = this.findLargestTarotCardInPlay();
-      if (smallestTarotCardInPlay === null && largestTarotCardInPlay === null){
-        this.tarotSmallPile.topCard = new Card(10, 't');
-        this.tarotLargePile.topCard = new Card(11, 't');
-      } else {
-        const highestCommittedSmallTarotCard = smallestTarotCardInPlay.getNextLowerCard();
-        const smallestCommittedLargeTarotCard = largestTarotCardInPlay.getNextHigherCard();
-        this.tarotSmallPile.topCard = highestCommittedSmallTarotCard;
-        this.tarotLargePile.topCard = smallestCommittedLargeTarotCard;
-      }
-
-      const smallestYInPlay = this.findSmallestSuitCardInPlay("y");
-      const smallestRInPlay = this.findSmallestSuitCardInPlay("r");
-      const smallestGInPlay = this.findSmallestSuitCardInPlay("g");
-      const smallestBInPlay = this.findSmallestSuitCardInPlay("b");
-
-      if ((smallestYInPlay !== null) && Card.sameCard(Card.newCardFromString("1y"), smallestYInPlay)) {
-          throw new Error(`Card 1Y should not be in play`);
-      }
-      if ((smallestRInPlay !== null) && Card.sameCard(Card.newCardFromString("1r"), smallestRInPlay)) {
-          throw new Error(`Card 1R should not be in play`);
-      }
-      if ((smallestGInPlay !== null) && Card.sameCard(Card.newCardFromString("1g"), smallestGInPlay)) {
-          throw new Error(`Card 1G should not be in play`);
-      }
-      if ((smallestBInPlay !== null) && Card.sameCard(Card.newCardFromString("1b"), smallestBInPlay)) {
-          throw new Error(`Card 1B should not be in play`);
-      }
-
-      if (smallestYInPlay === null){
-        this.suitYPile.topCard = new Card(13, 'y');
-      } else {
-        this.suitYPile.topCard = smallestYInPlay.getNextLowerCard();
-      }
-      if (smallestRInPlay === null){
-        this.suitRPile.topCard = new Card(13, 'r');
-      } else {
-        this.suitRPile.topCard = smallestRInPlay.getNextLowerCard();
-      }
-      if (smallestGInPlay === null){
-        this.suitGPile.topCard = new Card(13, 'g');
-      } else {
-        this.suitGPile.topCard = smallestGInPlay.getNextLowerCard();
-      }
-      if (smallestBInPlay === null){
-        this.suitBPile.topCard = new Card(13, 'b');
-      } else {
-        this.suitBPile.topCard = smallestBInPlay.getNextLowerCard();
-      }
-  }
-
-  /*
-  Get an array of arrays of column string, for displaying info
-   */
-  getColumnStringArrays(){
-      const columnStringArrays = [];
-      for (const columnPile of this.columnPilesArray) {
-        columnStringArrays.push(columnPile.columnToStringArray());
-      }
-    return columnStringArrays;
-  }
-
-  firstEmptyColumn(){
-      for (const columnLabel of GameState.COLUMN_LABELS){
-        const columnPile = this.getPileFromLabel(columnLabel);
-        if (columnPile.isEmpty()) return columnLabel;
-        }
-      return null;
-  }
-
-  /*
-  Note the label value offset, just to make it a little easier when displaying output
-   */
-  getPileFromLabel(pileLabel){
-      switch (pileLabel){
-
-        case "c1":
-          return this.columnPilesArray[0];
-        case "c2":
-          return this.columnPilesArray[1];
-        case "c3":
-          return this.columnPilesArray[2];
-        case "c4":
-          return this.columnPilesArray[3];
-        case "c5":
-          return this.columnPilesArray[4];
-        case "c6":
-          return this.columnPilesArray[5];
-        case "c7":
-          return this.columnPilesArray[6];
-        case "c8":
-          return this.columnPilesArray[7];
-        case "c9":
-          return this.columnPilesArray[8];
-        case "c10":
-          return this.columnPilesArray[9];
-        case "c11":
-          return this.columnPilesArray[10];
-        case "tarotSmall":
-          return this.tarotSmallPile;
-        case "tarotLarge":
-          return this.tarotLargePile;
-        case "freeSlot":
-          return this.freeSlotPile;
-        case "suitY":
-          return this.suitYPile;
-        case "suitR":
-          return this.suitRPile;
-        case "suitG":
-          return this.suitGPile;
-        case "suitB":
-          return this.suitBPile;
-        default:
-          throw new Error(`Inalid pile name - ${pileLabel}`);
-      }
-  }
-
-  getDisplayTextArray(cellPadding=5){
-      const outputArray = [];
-      let topLine = "";
-      if (this.tarotSmallPile.isEmpty()){
-          topLine += "   <T"
-      } else {
-          topLine += this.tarotSmallPile.lookTopCard().toString().padStart(cellPadding, " ");
-      }
-      if (this.tarotLargePile.isEmpty()){
-          topLine += "   >T"
-      } else {
-          topLine += this.tarotLargePile.lookTopCard().toString().padStart(cellPadding, " ");
-      }
-
-      if (this.freeSlotPile.isEmpty()){
-          topLine += " [ ] "
-      } else {
-          topLine += this.freeSlotPile.lookTopCard().toString().padStart(cellPadding, " ");
-      }
-
-      topLine += this.suitYPile.lookTopCard().toString().padStart(cellPadding, " ");
-      topLine += this.suitRPile.lookTopCard().toString().padStart(cellPadding, " ");
-      topLine += this.suitGPile.lookTopCard().toString().padStart(cellPadding, " ");
-      topLine += this.suitBPile.lookTopCard().toString().padStart(cellPadding, " ");
-
-      outputArray.push(topLine);
-      let columnLabelLine = "";
-      for (const columnLabel of GameState.COLUMN_LABELS){
-          columnLabelLine += columnLabel.padStart(cellPadding, " ");
-      }
-      outputArray.push ("-----------")
-      outputArray.push(columnLabelLine);
-      let i = 0;
-      while(true){
-          let nextLine = "";
-          let foundCardOnRow = false;
-          for (let c = 0; c < 11; c++) {
-              const columnPile = this.columnPilesArray[c];
-              const cardAti = columnPile.lookCardAtRow(i);
-              if (cardAti === null){
-                  nextLine += "".padStart(cellPadding, " ");
-              } else {
-                  nextLine += cardAti.toString().padStart(cellPadding, " ");
-                  foundCardOnRow = true;
-              }
-          }
-          outputArray.push(nextLine);
-          if (!(foundCardOnRow)) break;
-          i++;
-      }
-      return outputArray;
-  }
-
-  logStateToConsole(){
-      const lines = this.getDisplayTextArray(5);
-      for (const line of lines){
-          console.log(line);
-      }
-  }
-
-  executeSingleMove(origin, dest){
-      const originPile = this.getPileFromLabel(origin);
-      const destPile = this.getPileFromLabel(dest);
-
-      const moveCard = originPile.popTopCard();
-      destPile.placeCard(moveCard);
-
-  }
-
-  executeMoveSet(moveSet) {
-      for (const singleMove of moveSet.singleMoveArray){
-        this.executeSingleMove(singleMove[0], singleMove[1]);
-      }
-      this.loggedMoveSets.push(moveSet);
-  }
-
-  checkValidMove(origin, dest){
-    const originPile = this.getPileFromLabel(origin);
-    const destPile = this.getPileFromLabel(dest);
-
-    const moveCard = originPile.lookTopCard();
-    if (!(moveCard === null)) {
-      return destPile.canReceiveCard(moveCard);
-    } else {
-      return false;
-    }
-  }
-
-  freeSlotIsEmpty(){
-      return (this.freeSlotPile.lookTopCard() === null);
-  }
-
-  /* Checks if cards can be moved from one pile to another and returns a moveset if so
-      Returns null if no such move is valid
-   */
-  static VALID_ORIGIN_LABELS = ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9", "c10", "c11", "freeSlot"];
-
-  genMoveSet(originLabel, destLabel, auto=false){
-      if (!(GameState.VALID_ORIGIN_LABELS.includes(originLabel))){
-        throw new Error(`Error can't move from ${originLabel}`);
-      }
-      const originPile = this.getPileFromLabel(originLabel);
-      const destPile = this.getPileFromLabel(destLabel);
-
-      const [stackSize, topCard, bottomCard] = originPile.getTopStack();
-      if (stackSize === 0) return null;
-      if (!destPile.canReceiveCard(topCard)) return null;
-
-      const destDesc = destPile.topCardStr();
-
-      if (stackSize === 1){
-        let desc = `Move ${topCard} from ${originLabel} to ${destLabel} (${destDesc})`;
-        if (auto){
-            desc = "AUTO " + desc;
-        }
-        return MoveSet.newSingleMove(desc, originLabel, destLabel);
-      } else {
-        let desc = `Move ${stackSize} stack (${topCard} - ${bottomCard}) from ${originLabel} to ${destLabel} (${destDesc})`;
-        if (auto) {
-            desc = "AUTO " + desc;
-        }
-        const newMoveSet = new MoveSet(desc);
-        newMoveSet.addStackMove(originLabel, destLabel, stackSize);
-        return newMoveSet;
-      }
-  }
-
-
-  genFlipMoveSet(originLabel, destPileLabel, emptyColumnLabel){
-    if (this.getPileFromLabel(emptyColumnLabel) > 0){
-      throw new Error(`Error ${emptyColumnLabel} is not empty`);
+        return null;
     }
 
-    const originPile = this.getPileFromLabel(originLabel);
-    const destPile = this.getPileFromLabel(destPileLabel);
-    const [stackSize, topCard, bottomCard] = originPile.getTopStack()
+    findSmallestSuitCardInPlay(suit) {
+        const suitLower = suit.toLowerCase();
+        if (!Card.COLOR_SUITS.includes(suit)) {
+            throw new Error(`Invalid suit type ${suit}`);
+        }
+        for (let i = 1; i <= 13; i++) {
+            const searchCard = new Card(i, suitLower);
+            if (this.countCardInColumnsAndFree(searchCard) >= 1) {
+                return searchCard;
+            }
+        }
+        return null;
+    }
 
-    if (stackSize <= 1) return null;
-
-    if (destPile.canReceiveCard(bottomCard)) {
-        const destDesc = destPile.topCardStr();
-        let desc = "";
-        if (GameState.COMMIT_PILE_LABELS.includes(destPileLabel)) {
-        desc = `Move ${stackSize} card stack (${topCard} - ${bottomCard}) from ${originLabel} to empty column ${emptyColumnLabel} then AUTO MOVE to ${destPileLabel}`
+    initTopPiles() {
+        const smallestTarotCardInPlay = this.findSmallestTarotCardInPlay();
+        const largestTarotCardInPlay = this.findLargestTarotCardInPlay();
+        if (smallestTarotCardInPlay === null && largestTarotCardInPlay === null) {
+            this.tarotSmallPile.topCard = new Card(10, 't');
+            this.tarotLargePile.topCard = new Card(11, 't');
         } else {
-        desc = `Move ${stackSize} card stack (${topCard} - ${bottomCard}) from ${originLabel} to empty column ${emptyColumnLabel} then to ${destPileLabel} ((${destDesc}))`
+            const highestCommittedSmallTarotCard = smallestTarotCardInPlay.getNextLowerCard();
+            const smallestCommittedLargeTarotCard = largestTarotCardInPlay.getNextHigherCard();
+            this.tarotSmallPile.topCard = highestCommittedSmallTarotCard;
+            this.tarotLargePile.topCard = smallestCommittedLargeTarotCard;
         }
-        const newMoveSet = new MoveSet(desc);
-        newMoveSet.addStackMove(originLabel, emptyColumnLabel, stackSize - 1);
-        newMoveSet.addSingleMove(originLabel, destPileLabel);
-        newMoveSet.addStackMove(emptyColumnLabel, destPileLabel, stackSize - 1);
-        return newMoveSet;
-    }
 
-    return null;
-  }
+        const smallestYInPlay = this.findSmallestSuitCardInPlay("y");
+        const smallestRInPlay = this.findSmallestSuitCardInPlay("r");
+        const smallestGInPlay = this.findSmallestSuitCardInPlay("g");
+        const smallestBInPlay = this.findSmallestSuitCardInPlay("b");
 
-  genSingleMoveMoveSet(originLabel, destLabel){
-      const originPile = this.getPileFromLabel(originLabel);
-      const destPile = this.getPileFromLabel(destLabel);
-
-      const moveCard = originPile.lookTopCard();
-      if (destPile.canReceiveCard(moveCard)) {
-          const destDesc = destPile.topCardStr();
-          const desc = `Move ${moveCard} from ${originLabel} to ${destLabel} (${destDesc})`;
-          return MoveSet.newSingleMove(desc, originLabel, destLabel);
-      }
-
-      return null;
-  }
-
-  getNextForcedMoveSet() {
-      // FreeSlot - > Tarot
-    const freeToTarotSmall = this.genMoveSet("freeSlot", "tarotSmall", true);
-    if (freeToTarotSmall !== null) return freeToTarotSmall;
-    const freeToTarotLarge = this.genMoveSet("freeSlot", "tarotLarge", true);
-    if (freeToTarotLarge !== null) return freeToTarotLarge;
-
-    // Column -> Tarot
-    for (const originLabel of GameState.COLUMN_LABELS) {
-      const colToTarotSmall = this.genMoveSet(originLabel, "tarotSmall", true);
-      if (colToTarotSmall !== null) return colToTarotSmall;
-      const colToTarotLarge = this.genMoveSet(originLabel, "tarotLarge", true);
-      if (colToTarotLarge !== null) return colToTarotLarge;
-    }
-
-    // Column -> suit pile (only if free slot is empty)
-    if (this.freeSlotIsEmpty()){
-      for (const originColumnLabel of GameState.COLUMN_LABELS){
-        for (const destSuitPileLabel of GameState.SUIT_PILE_LABELS){
-          const colToSuitPile = this.genMoveSet(originColumnLabel, destSuitPileLabel, true);
-          if (colToSuitPile !== null) return colToSuitPile;
+        if ((smallestYInPlay !== null) && Card.sameCard(Card.newCardFromString("1y"), smallestYInPlay)) {
+            throw new Error(`Card 1Y should not be in play`);
         }
-      }
-    }
-
-    return null;
-  }
-
-  processForcedMoves(){
-    let nextForcedMove = this.getNextForcedMoveSet();
-    while(!(nextForcedMove === null)){
-      this.executeMoveSet(nextForcedMove);
-      nextForcedMove = this.getNextForcedMoveSet()
-
-    }
-  }
-
-  /*
-  This will generate all possible moves (that are worth considering) from the current gamestate.
-  They are generated in order from "most likely to be a good move" to "probably a waste of time".
-  We assume that all forced moves have already been processed.
-  The logic is a bit messy, but certain types of moves are a lot more likely to get good results than others.
-  That's why there's a lot of repetition that seems inefficient.
-
-  Note: when moving something to an empty column, ALWAYS use the leftmost column for clarity
-  Move order:
-  - If there's an empty column,
-  check if the bottom card of each column top stack could be commited to a tarot pile
-  - If there's an empty column and the free slot is empty,
-  check if the bottom card of each column top stack could be commited to a suit pile
-  - Check if the free slot card can be placed on any columns that have cards (not empty)
-  - If there is a free column, Check if any top stacks can be placed on any columns with cards after flipping
-  - Check if any top stacks can be placed on any columns with cards
-  (Now moves are getting less obvious)
-  - If there is an empty column, try moving top stacks larger than one card to it
-  - If the free slot is empty, try moving single card stacks on to it
-  - If the free slot is empty, try moving the top card of 2 size stacks to it
-  - If a column is empty, try moving a 2 or larger stacks to it
-  - If a column is empty and the free slot is full, try moving the free slot card to the column
-  - If a column is empty, try moving a single card stack to it
-  - If a column is empty, try moving the top card of a 2 size stack to the empty column
-
-   */
-  *possibleMoves(){
-    const firstEmptyColumnLabel = this.firstEmptyColumn();
-    const freeSlotIsEmpty = this.freeSlotIsEmpty();
-
-    // If there's an empty column,
-    // check if the bottom card of each column top stack could be commited to a tarot pile
-    if (firstEmptyColumnLabel != null){
-      for (const originColumnLabel of GameState.COLUMN_LABELS) {
-        const originPile = this.getPileFromLabel(originColumnLabel);
-        if (originPile.isEmpty()) continue;
-        const moveResultS = this.genFlipMoveSet(originColumnLabel, "tarotSmall", firstEmptyColumnLabel);
-        if (moveResultS !== null) yield moveResultS;
-        const moveResultL = this.genFlipMoveSet(originColumnLabel, "tarotLarge", firstEmptyColumnLabel);
-        if (moveResultL !== null) yield moveResultL;
-      }
-    }
-
-    // If there's an empty column and the free slot is empty,
-      //   check if the bottom card of each column top stack could be commited to a suit pile
-    if (freeSlotIsEmpty && firstEmptyColumnLabel != null){
-      for (const originColumnLabel of GameState.COLUMN_LABELS){
-        const originPile = this.getPileFromLabel(originColumnLabel);
-        if (originPile.isEmpty()) continue;
-        for (const destSuitPileLabel of GameState.SUIT_PILE_LABELS){
-          const moveResult = this.genFlipMoveSet(originColumnLabel, destSuitPileLabel, firstEmptyColumnLabel);
-          if (moveResult !== null) yield moveResult;
+        if ((smallestRInPlay !== null) && Card.sameCard(Card.newCardFromString("1r"), smallestRInPlay)) {
+            throw new Error(`Card 1R should not be in play`);
         }
-      }
+        if ((smallestGInPlay !== null) && Card.sameCard(Card.newCardFromString("1g"), smallestGInPlay)) {
+            throw new Error(`Card 1G should not be in play`);
+        }
+        if ((smallestBInPlay !== null) && Card.sameCard(Card.newCardFromString("1b"), smallestBInPlay)) {
+            throw new Error(`Card 1B should not be in play`);
+        }
+
+        if (smallestYInPlay === null) {
+            this.suitYPile.topCard = new Card(13, 'y');
+        } else {
+            this.suitYPile.topCard = smallestYInPlay.getNextLowerCard();
+        }
+        if (smallestRInPlay === null) {
+            this.suitRPile.topCard = new Card(13, 'r');
+        } else {
+            this.suitRPile.topCard = smallestRInPlay.getNextLowerCard();
+        }
+        if (smallestGInPlay === null) {
+            this.suitGPile.topCard = new Card(13, 'g');
+        } else {
+            this.suitGPile.topCard = smallestGInPlay.getNextLowerCard();
+        }
+        if (smallestBInPlay === null) {
+            this.suitBPile.topCard = new Card(13, 'b');
+        } else {
+            this.suitBPile.topCard = smallestBInPlay.getNextLowerCard();
+        }
     }
 
-    // Check if the free slot card can be placed on any columns that have cards (not empty)
-    if (!freeSlotIsEmpty) {
-      for (const destColumnLabel of GameState.COLUMN_LABELS){
-        const columnPile = this.getPileFromLabel(destColumnLabel);
-        if (columnPile.isEmpty()) continue; // we don't want to just throw the free card on empty columns yet
-        const moveResult = this.genMoveSet("freeSlot", destColumnLabel);
-        if (moveResult !== null) yield moveResult;
-      }
+    /*
+    Get an array of arrays of column string, for displaying info
+     */
+    getColumnStringArrays() {
+        const columnStringArrays = [];
+        for (const columnPile of this.columnPilesArray) {
+            columnStringArrays.push(columnPile.columnToStringArray());
+        }
+        return columnStringArrays;
     }
 
-    // If there is a free column, Check if any top stacks can be placed on any columns with cards after flipping
-    if (firstEmptyColumnLabel != null){
-        for (const originColumnLabel of GameState.COLUMN_LABELS){
+    firstEmptyColumn() {
+        for (const columnLabel of GameState.COLUMN_LABELS) {
+            const columnPile = this.getPileFromLabel(columnLabel);
+            if (columnPile.isEmpty()) return columnLabel;
+        }
+        return null;
+    }
+
+    /*
+    Note the label value offset, just to make it a little easier when displaying output
+     */
+    getPileFromLabel(pileLabel) {
+        switch (pileLabel) {
+
+            case "c1":
+                return this.columnPilesArray[0];
+            case "c2":
+                return this.columnPilesArray[1];
+            case "c3":
+                return this.columnPilesArray[2];
+            case "c4":
+                return this.columnPilesArray[3];
+            case "c5":
+                return this.columnPilesArray[4];
+            case "c6":
+                return this.columnPilesArray[5];
+            case "c7":
+                return this.columnPilesArray[6];
+            case "c8":
+                return this.columnPilesArray[7];
+            case "c9":
+                return this.columnPilesArray[8];
+            case "c10":
+                return this.columnPilesArray[9];
+            case "c11":
+                return this.columnPilesArray[10];
+            case "tarotSmall":
+                return this.tarotSmallPile;
+            case "tarotLarge":
+                return this.tarotLargePile;
+            case "freeSlot":
+                return this.freeSlotPile;
+            case "suitY":
+                return this.suitYPile;
+            case "suitR":
+                return this.suitRPile;
+            case "suitG":
+                return this.suitGPile;
+            case "suitB":
+                return this.suitBPile;
+            default:
+                throw new Error(`Inalid pile name - ${pileLabel}`);
+        }
+    }
+
+    getDisplayTextArray(cellPadding = 5) {
+        const outputArray = [];
+        let topLine = "";
+        if (this.tarotSmallPile.isEmpty()) {
+            topLine += "   <T"
+        } else {
+            topLine += this.tarotSmallPile.lookTopCard().toString().padStart(cellPadding, " ");
+        }
+        if (this.tarotLargePile.isEmpty()) {
+            topLine += "   >T"
+        } else {
+            topLine += this.tarotLargePile.lookTopCard().toString().padStart(cellPadding, " ");
+        }
+
+        if (this.freeSlotPile.isEmpty()) {
+            topLine += " [ ] "
+        } else {
+            topLine += this.freeSlotPile.lookTopCard().toString().padStart(cellPadding, " ");
+        }
+
+        topLine += this.suitYPile.lookTopCard().toString().padStart(cellPadding, " ");
+        topLine += this.suitRPile.lookTopCard().toString().padStart(cellPadding, " ");
+        topLine += this.suitGPile.lookTopCard().toString().padStart(cellPadding, " ");
+        topLine += this.suitBPile.lookTopCard().toString().padStart(cellPadding, " ");
+
+        outputArray.push(topLine);
+        let columnLabelLine = "";
+        for (const columnLabel of GameState.COLUMN_LABELS) {
+            columnLabelLine += columnLabel.padStart(cellPadding, " ");
+        }
+        outputArray.push("-----------")
+        outputArray.push(columnLabelLine);
+        let i = 0;
+        while (true) {
+            let nextLine = "";
+            let foundCardOnRow = false;
+            for (let c = 0; c < 11; c++) {
+                const columnPile = this.columnPilesArray[c];
+                const cardAti = columnPile.lookCardAtRow(i);
+                if (cardAti === null) {
+                    nextLine += "".padStart(cellPadding, " ");
+                } else {
+                    nextLine += cardAti.toString().padStart(cellPadding, " ");
+                    foundCardOnRow = true;
+                }
+            }
+            outputArray.push(nextLine);
+            if (!(foundCardOnRow)) break;
+            i++;
+        }
+        return outputArray;
+    }
+
+    logStateToConsole() {
+        const lines = this.getDisplayTextArray(5);
+        for (const line of lines) {
+            console.log(line);
+        }
+    }
+
+    executeSingleMove(origin, dest) {
+        const originPile = this.getPileFromLabel(origin);
+        const destPile = this.getPileFromLabel(dest);
+
+        const moveCard = originPile.popTopCard();
+        destPile.placeCard(moveCard);
+
+    }
+
+    executeMoveSet(moveSet) {
+        for (const singleMove of moveSet.singleMoveArray) {
+            this.executeSingleMove(singleMove[0], singleMove[1]);
+        }
+        this.loggedMoveSets.push(moveSet);
+    }
+
+    checkValidMove(origin, dest) {
+        const originPile = this.getPileFromLabel(origin);
+        const destPile = this.getPileFromLabel(dest);
+
+        const moveCard = originPile.lookTopCard();
+        if (!(moveCard === null)) {
+            return destPile.canReceiveCard(moveCard);
+        } else {
+            return false;
+        }
+    }
+
+    freeSlotIsEmpty() {
+        return (this.freeSlotPile.lookTopCard() === null);
+    }
+
+    /*
+    Checks in the top stack cards of a given column can be moved together to another pile.
+    If so, returns a moveSet for those actions.
+     */
+    static VALID_ORIGIN_LABELS = ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9", "c10", "c11", "freeSlot"];
+
+    genMoveSet(originLabel, destLabel, auto = false, movePriority = -1) {
+        if (!(GameState.VALID_ORIGIN_LABELS.includes(originLabel))) {
+            throw new Error(`Error can't move from ${originLabel}`);
+        }
+        const originPile = this.getPileFromLabel(originLabel);
+        const destPile = this.getPileFromLabel(destLabel);
+
+        const [stackSize, topCard, bottomCard] = originPile.getTopStack();
+        if (stackSize === 0) return null;
+        if (!destPile.canReceiveCard(topCard)) return null;
+
+        const destDesc = destPile.topCardStr();
+
+        if (stackSize === 1) {
+            let desc = `Move ${topCard} from ${originLabel} to ${destLabel} (${destDesc})`;
+            if (auto) {
+                desc = "AUTO " + desc;
+            }
+            return MoveSet.newSingleMove(desc, originLabel, destLabel, movePriority);
+        } else {
+            let desc = `Move ${stackSize} stack (${topCard} - ${bottomCard}) from ${originLabel} to ${destLabel} (${destDesc})`;
+            if (auto) {
+                desc = "AUTO " + desc;
+            }
+            const newMoveSet = new MoveSet(desc);
+            newMoveSet.addStackMove(originLabel, destLabel, stackSize, movePriority);
+            return newMoveSet;
+        }
+    }
+
+
+    genFlipMoveSet(originLabel, destPileLabel, emptyColumnLabel, auto = false, movePriority = -1) {
+        if (this.getPileFromLabel(emptyColumnLabel) > 0) {
+            throw new Error(`Error ${emptyColumnLabel} is not empty`);
+        }
+
+        const originPile = this.getPileFromLabel(originLabel);
+        const destPile = this.getPileFromLabel(destPileLabel);
+        const [stackSize, topCard, bottomCard] = originPile.getTopStack()
+
+        if (stackSize <= 1) return null;
+
+        if (destPile.canReceiveCard(bottomCard)) {
+            const destDesc = destPile.topCardStr();
+            let desc = "";
+            if (GameState.COMMIT_PILE_LABELS.includes(destPileLabel)) {
+                desc = `Move ${stackSize} card stack (${topCard} - ${bottomCard}) from ${originLabel} to empty column ${emptyColumnLabel} then AUTO MOVE to ${destPileLabel}`
+            } else {
+                desc = `Move ${stackSize} card stack (${topCard} - ${bottomCard}) from ${originLabel} to empty column ${emptyColumnLabel} then to ${destPileLabel} ((${destDesc}))`
+            }
+            const newMoveSet = new MoveSet(desc, movePriority);
+            newMoveSet.addStackMove(originLabel, emptyColumnLabel, stackSize - 1);
+            newMoveSet.addSingleMove(originLabel, destPileLabel);
+            newMoveSet.addStackMove(emptyColumnLabel, destPileLabel, stackSize - 1);
+            return newMoveSet;
+        }
+
+        return null;
+    }
+
+    genSingleMoveMoveSet(originLabel, destLabel, auto = false, movePriority = -1) {
+        const originPile = this.getPileFromLabel(originLabel);
+        const destPile = this.getPileFromLabel(destLabel);
+
+        const moveCard = originPile.lookTopCard();
+        if (destPile.canReceiveCard(moveCard)) {
+            const destDesc = destPile.topCardStr();
+            const desc = `Move ${moveCard} from ${originLabel} to ${destLabel} (${destDesc})`;
+            return MoveSet.newSingleMove(desc, originLabel, destLabel, movePriority);
+        }
+
+        return null;
+    }
+
+    getNextForcedMoveSet() {
+        const movePriority = 0;
+        // FreeSlot - > Tarot
+        const freeToTarotSmall = this.genMoveSet("freeSlot", "tarotSmall", true, movePriority);
+        if (freeToTarotSmall !== null) return freeToTarotSmall;
+        const freeToTarotLarge = this.genMoveSet("freeSlot", "tarotLarge", true, movePriority);
+        if (freeToTarotLarge !== null) return freeToTarotLarge;
+
+        // Column -> Tarot
+        for (const originLabel of GameState.COLUMN_LABELS) {
+            const colToTarotSmall = this.genMoveSet(originLabel, "tarotSmall", true, movePriority);
+            if (colToTarotSmall !== null) return colToTarotSmall;
+            const colToTarotLarge = this.genMoveSet(originLabel, "tarotLarge", true, movePriority);
+            if (colToTarotLarge !== null) return colToTarotLarge;
+        }
+
+        // Column -> suit pile (only if free slot is empty)
+        if (this.freeSlotIsEmpty()) {
+            for (const originColumnLabel of GameState.COLUMN_LABELS) {
+                for (const destSuitPileLabel of GameState.SUIT_PILE_LABELS) {
+                    const colToSuitPile = this.genMoveSet(originColumnLabel, destSuitPileLabel, true, movePriority);
+                    if (colToSuitPile !== null) return colToSuitPile;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    processForcedMoves() {
+        let nextForcedMove = this.getNextForcedMoveSet();
+        while (!(nextForcedMove === null)) {
+            this.executeMoveSet(nextForcedMove);
+            nextForcedMove = this.getNextForcedMoveSet()
+
+        }
+    }
+
+    /*
+    This will generate all possible moves (that are worth considering) from the current gamestate.
+    They are generated in order from "most likely to be a good move" to "probably a waste of time".
+    We assume that all forced moves have already been processed.
+    The logic is a bit messy, but certain types of moves are a lot more likely to get good results than others.
+    That's why there's a lot of repetition that seems inefficient.
+
+    Note: when moving something to an empty column, ALWAYS ONLY use the leftmost column
+
+    Move priority order (after forced moves have been processed) :
+
+    1. If there's an empty column,
+    check if the bottom card of each column top stack could be commited to a tarot pile.
+    If so, flip the top stack to that empty column.
+
+    2. If there's an empty column and the free slot is empty,
+    check if the bottom card of each column top stack could be commited to a suit pile.
+    If so, flip the top stack to that empty column.
+
+    3. Check if the free slot card can be placed on any columns that have cards (not empty).
+    If so, move it to that column.
+
+    4. If there is a free column, Check if any top stacks can be placed on any columns with cards after flipping.
+    If so, move that top stack to the empty column then to the other column.
+
+    5. Check if any top stacks can be placed on any other columns with cards.
+    If so, move that top stack to that column.
+
+    6. If there is an empty column
+    Check if there is a card beneath any of the top stacks that could be commited to a tarot pile.
+    If so, flip the top pile of that column onto the empty column.
+
+    7. If the free slot is filled, and there's an empty column,
+    check if the card beneath any of the top stacks could be committed to a color suit pile.
+    If so, move the free slot card to the empty column.
+
+
+    (Now moves are getting less obvious)
+    8. If there is an empty column, try moving top stacks larger than one card to it.
+    9. If the free slot is empty, try moving single card stacks on to it.
+    10. If the free slot is empty, try moving the top card of 2 size stacks to it.
+    11. If a column is empty, try moving a 2 or larger stacks to it.
+    12. If a column is empty and the free slot is full, try moving the free slot card to the column.
+    13. If a column is empty, try moving a single card stack to it.
+    14. If a column is empty, try moving the top card of a 2 size stack to the empty column.
+
+     */
+    * possibleMoves() {
+        const firstEmptyColumnLabel = this.firstEmptyColumn();
+        const freeSlotIsEmpty = this.freeSlotIsEmpty();
+        let movePriority = 0;
+
+        // 1. If there's an empty column,
+        // check if the bottom card of each column top stack could be commited to a tarot pile.
+        // If so, flip the top stack to that empty column.
+        movePriority = 1;
+        if (firstEmptyColumnLabel) {
+            for (const originColumnLabel of GameState.COLUMN_LABELS) {
+                const originPile = this.getPileFromLabel(originColumnLabel);
+                if (originPile.isEmpty()) continue;
+                const moveResultS = this.genFlipMoveSet(originColumnLabel, "tarotSmall", firstEmptyColumnLabel, false, movePriority);
+                if (moveResultS !== null) yield moveResultS;
+                const moveResultL = this.genFlipMoveSet(originColumnLabel, "tarotLarge", firstEmptyColumnLabel, false, movePriority);
+                if (moveResultL !== null) yield moveResultL;
+            }
+        }
+
+        // 2. If there's an empty column and the free slot is empty,
+        // check if the bottom card of each column top stack could be commited to a suit pile.
+        // If so, flip the top stack to that empty column.
+        movePriority = 2
+        if (freeSlotIsEmpty && firstEmptyColumnLabel != null) {
+            for (const originColumnLabel of GameState.COLUMN_LABELS) {
+                const originPile = this.getPileFromLabel(originColumnLabel);
+                if (originPile.isEmpty()) continue;
+                for (const destSuitPileLabel of GameState.SUIT_PILE_LABELS) {
+                    const moveResult = this.genFlipMoveSet(originColumnLabel, destSuitPileLabel, firstEmptyColumnLabel, false, movePriority);
+                    if (moveResult !== null) yield moveResult;
+                }
+            }
+        }
+
+        // 3. Check if the free slot card can be placed on any columns that have cards (not empty).
+        // If so, move it to that column.
+        movePriority = 3;
+        if (!freeSlotIsEmpty) {
+            for (const destColumnLabel of GameState.COLUMN_LABELS) {
+                const destColumnPile = this.getPileFromLabel(destColumnLabel);
+                if (destColumnPile.isEmpty()) continue; // we don't want to just throw the free card on empty columns yet
+                const moveResult = this.genMoveSet("freeSlot", destColumnLabel, false, movePriority);
+                if (moveResult !== null) yield moveResult;
+            }
+        }
+
+        //  4. If there is a free column, Check if any top stacks can be placed on any columns with cards after flipping.
+        //  If so, move that top stack to the empty column then to the other column.
+        movePriority = 4;
+        if (firstEmptyColumnLabel) {
+            for (const originColumnLabel of GameState.COLUMN_LABELS) {
+                const originColumn = this.getPileFromLabel(originColumnLabel);
+                if (originColumn.isEmpty()) continue;
+                for (const destColumnLabel of GameState.COLUMN_LABELS) {
+                    const destColumn = this.getPileFromLabel(destColumnLabel);
+                    if (originColumnLabel === destColumnLabel) continue;
+                    if (destColumn.isEmpty()) continue;
+                    const moveResult = this.genFlipMoveSet(originColumnLabel, destColumnLabel, firstEmptyColumnLabel, false, movePriority);
+                    if (moveResult !== null) yield moveResult;
+                }
+            }
+        }
+
+        // 5. Check if any top stacks can be placed on any other columns with cards.
+        // If so, move that top stack to that column.
+        movePriority = 5;
+        for (const originColumnLabel of GameState.COLUMN_LABELS) {
             const originColumn = this.getPileFromLabel(originColumnLabel);
             if (originColumn.isEmpty()) continue;
-            for (const destColumnLabel of GameState.COLUMN_LABELS){
-                const destColumn = this.getPileFromLabel(destColumnLabel);
+            for (const destColumnLabel of GameState.COLUMN_LABELS) {
                 if (originColumnLabel === destColumnLabel) continue;
-                if (destColumn.isEmpty()) continue;
-                const moveResult = this.genFlipMoveSet(originColumnLabel, destColumnLabel, firstEmptyColumnLabel);
+                const destColumn = this.getPileFromLabel(destColumnLabel);
+                if (destColumn.isEmpty()) continue; // Ignore empty columns for now
+                const moveResult = this.genMoveSet(originColumnLabel, destColumnLabel, false, movePriority);
+                if (moveResult !== null) yield moveResult;
+            }
+        }
+
+        //   6. If there is an empty column
+        //   Check if there is a card beneath any of the top stacks that could be commited to a tarot pile.
+        //   If so, flip the top pile of that column onto the empty column.
+        movePriority = 6;
+        if (firstEmptyColumnLabel) {
+            for (const originColumnLabel of GameState.COLUMN_LABELS) {
+                const originColumn = this.getPileFromLabel(originColumnLabel);
+                const cardBelowTopStack = originColumn.getCardBelowTopStack();
+                if (cardBelowTopStack === null) continue; // Should return null both if the pile is empty and if the whole pile is one stack
+                if (this.tarotSmallPile.canReceiveCard(cardBelowTopStack)) {
+                    const moveResult = this.genMoveSet(originColumnLabel, firstEmptyColumnLabel, false, movePriority);
+                    if (moveResult !== null) yield moveResult;
+                }
+                if (this.tarotLargePile.canReceiveCard(cardBelowTopStack)) {
+                    const moveResult = this.genMoveSet(originColumnLabel, firstEmptyColumnLabel, false, movePriority);
+                    if (moveResult !== null) yield moveResult;
+                }
+            }
+        }
+        //   7. If the free slot is filled, and there's an empty column,
+        //   check if the card beneath any of the top stacks could be committed to a color suit pile.
+        //   If so, move the free slot card to the empty column.
+        movePriority = 7;
+        if (!freeSlotIsEmpty && (firstEmptyColumnLabel)) {
+            for (const originColumnLabel of GameState.COLUMN_LABELS) {
+                const originColumn = this.getPileFromLabel(originColumnLabel);
+                const cardBelowTopStack = originColumn.getCardBelowTopStack();
+                if (cardBelowTopStack === null) continue;
+                for (const suitPileLabel of GameState.SUIT_PILE_LABELS) {
+                    const suitPile = this.getPileFromLabel(suitPileLabel);
+                    if (suitPile.canReceiveCard(cardBelowTopStack)) {
+                        const moveResult = this.genSingleMoveMoveSet("freeSlot", firstEmptyColumnLabel, false, movePriority);
+                        if (moveResult !== null) yield moveResult;
+                    }
+                }
+            }
+        }
+
+        //   8. If there is an empty column, try moving top stacks larger than one card to it.
+        movePriority = 8;
+        if (firstEmptyColumnLabel) {
+            for (const originColumnLabel of GameState.COLUMN_LABELS) {
+                const originColumn = this.getPileFromLabel(originColumnLabel);
+                if (originColumn.isEmpty()) continue;
+                const originTopStack = originColumn.getTopStack();
+                if (originTopStack[0] < 2) continue;
+                const moveResult = this.genMoveSet(originColumnLabel, firstEmptyColumnLabel, false, movePriority)
+                if (moveResult !== null) yield moveResult;
+            }
+        }
+
+        //   9. If the free slot is empty, try moving single card stacks on to it.
+        movePriority = 9;
+        if (freeSlotIsEmpty) {
+            for (const originColumnLabel of GameState.COLUMN_LABELS) {
+                const originColumn = this.getPileFromLabel(originColumnLabel);
+                if (originColumn.isEmpty()) continue;
+                const originTopStack = originColumn.getTopStack();
+                if (originTopStack[0] !== 1) continue;
+                const moveResult = this.genSingleMoveMoveSet(originColumnLabel, "freeSlot", false, movePriority);
+                if (moveResult !== null) yield moveResult;
+            }
+        }
+
+        // 10. If the free slot is empty, try moving the top card of 2 size stacks to it.
+        movePriority = 10;
+        if (freeSlotIsEmpty) {
+            for (const originColumnLabel of GameState.COLUMN_LABELS) {
+                const originColumn = this.getPileFromLabel(originColumnLabel);
+                const topStack = originColumn.getTopStack();
+                if (topStack[0] !== 2) continue;
+                const moveResult = this.genSingleMoveMoveSet(originColumnLabel, "freeSlot", false, movePriority);
+                if (moveResult !== null) yield moveResult;
+            }
+        }
+
+        //  11. If a column is empty, try moving a 2 or larger stacks to it.
+        movePriority = 11;
+        if (firstEmptyColumnLabel) {
+            for (const originColumnLabel of GameState.COLUMN_LABELS) {
+                const originColumn = this.getPileFromLabel(originColumnLabel);
+                if (originColumn.isEmpty()) continue;
+                const topStack = originColumn.getTopStack();
+                if (topStack[0] < 2) continue;
+                const moveResult = this.genMoveSet(originColumnLabel, firstEmptyColumnLabel, false, movePriority);
+                if (moveResult !== null) yield moveResult;
+            }
+        }
+        //   12. If a column is empty and the free slot is full, try moving the free slot card to the column.
+        movePriority = 12;
+        if (!(freeSlotIsEmpty) && (firstEmptyColumnLabel)) {
+            const moveResult = this.genMoveSet("freeSlot", firstEmptyColumnLabel, false, movePriority);
+            if (moveResult !== null) yield moveResult;
+        }
+
+        //   13. If a column is empty, try moving a single card stack to it.
+        movePriority = 13;
+        if (firstEmptyColumnLabel) {
+            for (const originColumnLabel of GameState.COLUMN_LABELS) {
+                const originColumn = this.getPileFromLabel(originColumnLabel);
+                if (originColumn.isEmpty()) continue;
+                const topStack = originColumn.getTopStack();
+                if (topStack[0] !== 1) continue;
+                const moveResult = this.genMoveSet(originColumnLabel, firstEmptyColumnLabel, false, movePriority);
+                if (moveResult !== null) yield moveResult;
+            }
+        }
+        //   14. If a column is empty, try moving the top card of a 2 size stack to the empty column.
+        movePriority = 14;
+        if (firstEmptyColumnLabel) {
+            for (const originColumnLabel of GameState.COLUMN_LABELS) {
+                const originColumn = this.getPileFromLabel(originColumnLabel);
+                const topStack = originColumn.getTopStack();
+                if (topStack[0] !== 2) continue;
+                const moveResult = this.genSingleMoveMoveSet(originColumnLabel, firstEmptyColumnLabel, false, movePriority);
                 if (moveResult !== null) yield moveResult;
             }
         }
     }
 
-    // Check if any top stacks can be placed on any columns with cards
-    for (const originColumnLabel of GameState.COLUMN_LABELS) {
-        const originColumn = this.getPileFromLabel(originColumnLabel);
-        if (originColumn.isEmpty()) continue;
-        for (const destColumnLabel of GameState.COLUMN_LABELS) {
-            if (originColumnLabel === destColumnLabel) continue;
-            const destColumn = this.getPileFromLabel(destColumnLabel);
-            if (destColumn.isEmpty()) continue;
-            const moveResult = this.genMoveSet(originColumnLabel, destColumnLabel);
-            if (moveResult !== null) yield moveResult;
+    checkWin() {
+        for (const columnPile of this.columnPilesArray) {
+            if (!(columnPile.isEmpty())) {
+                return false;
+            }
         }
+        return true;
     }
 
-    // If there is an empty column, try moving top stacks larger than one card to it
-    if (firstEmptyColumnLabel != null) {
-      for (const originColumnLabel of GameState.COLUMN_LABELS) {
-          const originColumn = this.getPileFromLabel(originColumnLabel);
-          if (originColumn.isEmpty()) continue;
-          const originTopStack = originColumn.getTopStack();
-          if (originTopStack[0] < 2) continue;
-          const moveResult = this.genMoveSet(originColumnLabel, firstEmptyColumnLabel)
-      }
-    }
-
-    // If the free slot is empty, try moving single card stacks on to it
-    if (freeSlotIsEmpty) {
-        for (const originColumnLabel of GameState.COLUMN_LABELS) {
-            const originColumn = this.getPileFromLabel(originColumnLabel);
-            if (originColumn.isEmpty()) continue;
-            const originTopStack = originColumn.getTopStack();
-            if (originTopStack[0] !== 1) continue;
-            const moveResult = this.genMoveSet(originColumnLabel, "freeSlot");
-            if (moveResult !== null) yield moveResult;
+    clone() {
+        const newColumnPileArray = [];
+        for (const columnPile of this.columnPilesArray) {
+            newColumnPileArray.push(columnPile.clone());
         }
+        const newTarotSmallPile = this.tarotSmallPile.clone();
+        const newTarotLargePile = this.tarotLargePile.clone();
+        const newFreeSlotPile = this.freeSlotPile.clone();
+        const newSuitYPile = this.suitYPile.clone();
+        const newSuitRPile = this.suitRPile.clone();
+        const newSuitGPile = this.suitGPile.clone();
+        const newSuitBPile = this.suitBPile.clone();
+
+
+        return new GameState(newColumnPileArray, newTarotSmallPile, newTarotLargePile, newFreeSlotPile,
+            newSuitYPile, newSuitRPile, newSuitGPile, newSuitBPile)
     }
 
-      // If the free slot is empty, try moving the top card of 2 size stacks to it
-      if (freeSlotIsEmpty) {
-          for (const originColumnLabel of GameState.COLUMN_LABELS) {
-              const originColumn = this.getPileFromLabel(originColumnLabel);
-              const topStack = originColumn.getTopStack();
-              if (topStack[0] !== 2) continue;
-              const moveResult = this.genSingleMoveMoveSet(originColumnLabel, "freeSlot");
-              if (moveResult !== null) yield moveResult;
-         }
-      }
+    solve(maxAllowedDepth = 200, maxAllowedStates = 500000) {
+        const topSubState = this.clone();
+        topSubState.processForcedMoves();
+        const checkedStateIDsSet = new Set();
+        const finalResult = topSubState.subSolve(checkedStateIDsSet, maxAllowedDepth, maxAllowedStates, 0);
+        if (finalResult === null) {
+            return null;
+        } else {
+            const finalResultReversed = finalResult.reverse();
+            return finalResultReversed;
+        }
 
-      // - If a column is empty, try moving a 2 or larger stacks to it
-      if (firstEmptyColumnLabel != null){
-          for (const originColumnLabel of GameState.COLUMN_LABELS) {
-              const originColumn = this.getPileFromLabel(originColumnLabel);
-              if (originColumn.isEmpty()) continue;
-              const topStack = originColumn.getTopStack();
-              if (topStack[0] <= 1) continue;
-              const moveResult = this.genMoveSet(originColumnLabel, firstEmptyColumnLabel);
-              if (moveResult !== null) yield moveResult;
-          }
-      }
-      // - If a column is empty and the free slot is full, try moving the free slot card to the column
-      if (!(freeSlotIsEmpty) && (firstEmptyColumnLabel != null)){
-              const moveResult = this.genMoveSet("freeSlot", firstEmptyColumnLabel);
-              if (moveResult !== null) yield moveResult;
-      }
-      // - If a column is empty, try moving a single card stack to it
-      if (firstEmptyColumnLabel != null){
-          for (const originColumnLabel of GameState.COLUMN_LABELS) {
-              const originColumn = this.getPileFromLabel(originColumnLabel);
-              if (originColumn.isEmpty()) continue;
-              const topStack = originColumn.getTopStack();
-              if (topStack[0] !== 1) continue;
-              const moveResult = this.genMoveSet(originColumnLabel, firstEmptyColumnLabel);
-              if (moveResult !== null) yield moveResult;
-          }
-      }
-      // - If a column is empty, try moving the top card of a 2 size stack to the empty column
-      if (firstEmptyColumnLabel != null){
-          for (const originColumnLabel of GameState.COLUMN_LABELS) {
-              const originColumn = this.getPileFromLabel(originColumnLabel);
-              const topStack = originColumn.getTopStack();
-              if (topStack[0] !== 2) continue;
-              const moveResult = this.genSingleMoveMoveSet(originColumnLabel, firstEmptyColumnLabel);
-              if (moveResult !== null) yield moveResult;
-          }
-      }
-  }
-
-  checkWin(){
-      for (const columnPile of this.columnPilesArray){
-          if (!(columnPile.isEmpty())) {
-              return false;
-          }
-      }
-      return true;
-  }
-
-  clone(){
-      const newColumnPileArray = [];
-      for (const columnPile of this.columnPilesArray){
-          newColumnPileArray.push(columnPile.clone());
-      }
-      const newTarotSmallPile = this.tarotSmallPile.clone();
-      const newTarotLargePile = this.tarotLargePile.clone();
-      const newFreeSlotPile = this.freeSlotPile.clone();
-      const newSuitYPile = this.suitYPile.clone();
-      const newSuitRPile = this.suitRPile.clone();
-      const newSuitGPile = this.suitGPile.clone();
-      const newSuitBPile = this.suitBPile.clone();
-
-
-      return new GameState(newColumnPileArray, newTarotSmallPile, newTarotLargePile, newFreeSlotPile,
-          newSuitYPile, newSuitRPile, newSuitGPile, newSuitBPile)
-  }
-
-  solve(maxAllowedDepth=150, maxAllowedStates=100000){
-      const topSubState = this.clone();
-      topSubState.processForcedMoves();
-      const checkedStateIDsSet = new Set();
-      const finalResult = topSubState.subSolve(checkedStateIDsSet, maxAllowedDepth, maxAllowedStates, 0);
-      if (finalResult === null) {
-          return null;
-      } else {
-        const finalResultReversed = finalResult.reverse();
-        return finalResultReversed;
-      }
-
-  }
-
-  subSolve(checkedStatesSet, maxAllowedDepth, maxAllowedStates, lastDepth) {
-    this.logStateToConsole();
-
-    const currentDepth = lastDepth + 1;
-    deepestDepth = Math.max(deepestDepth, currentDepth);
-    if (currentDepth >= maxAllowedDepth) {
-      return null;
     }
 
-    if (checkedStatesSet.size > maxAllowedStates) {
-      return null;
-    }
+    subSolve(checkedStatesSet, maxAllowedDepth, maxAllowedStates, lastDepth) {
+
+        this.validate();
+        const currentDepth = lastDepth + 1;
+        deepestDepth = Math.max(deepestDepth, currentDepth);
+        if (currentDepth >= maxAllowedDepth) {
+            return null;
+        }
+
+        if (checkedStatesSet.size > maxAllowedStates) {
+            return null;
+        }
 
 
-    this.processForcedMoves();
+        this.processForcedMoves();
 
-    if (this.checkWin()) {
-      return this.loggedMoveSets.reverse();
-    }
+        if (this.checkWin()) {
+            return this.loggedMoveSets.reverse();
+        }
 
-    const postID = this.getIDStr();
-    if (checkedStatesSet.has(postID)) {
+        const postID = this.getIDStr();
+        if (checkedStatesSet.has(postID)) {
+            return null;
+        }
+
+        checkedStatesSet.add(postID);
+        checkedSetsSize = checkedStatesSet.size;
+
+        for (const nextPossibleMove of this.possibleMoves()) {
+            const subState = this.clone();
+            subState.executeMoveSet(nextPossibleMove);
+            const subResult = subState.subSolve(
+                checkedStatesSet,
+                maxAllowedDepth,
+                maxAllowedStates,
+                currentDepth,
+            );
+
+            if (subResult !== null) {
+                const reversedLoggedMoves = this.loggedMoveSets.reverse();
+                for (const loggedMoveSet of reversedLoggedMoves) {
+                    subResult.push(loggedMoveSet);
+                }
+                return subResult;
+            }
+        }
         return null;
     }
 
-    checkedStatesSet.add(postID);
-    checkedSetsSize = checkedStatesSet.size;
+    /*
+    Generates a str representing the current gamestate.
+    Note, we don't have to care about what order the columns are in.
+    If you simply swapped the cards in two columns, that is still exactly the same gamestate except for the labels.
+    Thus, we can just sort the strings representing each column before combining them.
+    That's why we start with the free slot then join the sorted column strings.
+     */
+    getIDStr() {
+        let idStr = "";
 
-    for (const nextPossibleMove of this.possibleMoves()) {
-      const subState = this.clone();
-      subState.executeMoveSet(nextPossibleMove);
-      const subResult = subState.subSolve(
-        checkedStatesSet,
-        maxAllowedDepth,
-        maxAllowedStates,
-        currentDepth,
-      );
-
-      if (subResult !== null) {
-        const reversedLoggedMoves = this.loggedMoveSets.reverse();
-        for (const loggedMoveSet of reversedLoggedMoves) {
-          subResult.push(loggedMoveSet);
+        if (this.freeSlotIsEmpty()) {
+            idStr += "n"
+        } else {
+            idStr += this.freeSlotPile.lookTopCard().toString();
         }
-        return subResult;
-      }
+        const columnTxtArray = [];
+        for (const columnPile of this.columnPilesArray) {
+            columnTxtArray.push(columnPile.columnToIDStr());
+        }
+        columnTxtArray.sort();
+
+        for (const columnStr of columnTxtArray) {
+            if (columnStr.length > 0) {
+                idStr += " " + columnStr;
+            }
+        }
+        return idStr;
     }
-    return null;
-  }
-
-  /*
-  Generates a str representing the current gamestate.
-  Note, we don't have to care about what order the columns are in.
-  If you simply swapped the cards in two columns, that is still exactly the same gamestate except for the labels.
-  Thus, we can just sort the strings representing each column before combining them.
-  That's why we start with the free slot then join the sorted column strings.
-   */
-  getIDStr() {
-      let idStr = "";
-
-      if (this.freeSlotIsEmpty()) {
-          idStr += "n"
-      } else {
-          idStr += this.freeSlotPile.lookTopCard().toString();
-      }
-      const columnTxtArray = [];
-      for (const columnPile of this.columnPilesArray){
-        columnTxtArray.push(columnPile.columnToIDStr());
-      }
-      columnTxtArray.sort();
-
-      for (const columnStr of columnTxtArray){
-          if (columnStr.length > 0){
-              idStr += " " + columnStr;
-          }
-      }
-      return idStr;
-  }
 }
 
 class MoveSet {
-  constructor(description){
-    this.singleMoveArray = [];
-    this.description = description;
-  }
-
-  static newSingleMove(description, origin, destination){
-    const newMoveset = new MoveSet(description);
-    newMoveset.singleMoveArray.push([origin, destination]);
-    return newMoveset
-  }
-
-  addStackMove(origin, destination, size){
-    for (let i = 0; i < size; i++){
-      this.singleMoveArray.push([origin, destination]);
+    constructor(description, movePriority = 0) {
+        this.singleMoveArray = [];
+        this.description = description;
+        this.movePriority = movePriority; // This is for keeping track of what move priority this is, just for debugging
+        priorityTracker[movePriority] += 1;
     }
-  }
 
-  addSingleMove(origin, destination){
-    this.singleMoveArray.push([origin, destination]);
-  }
+    static newSingleMove(description, origin, destination, movePriority = 0) {
+        const newMoveset = new MoveSet(description, movePriority);
+        newMoveset.singleMoveArray.push([origin, destination]);
+        return newMoveset
+    }
+
+    addStackMove(origin, destination, stackSize) {
+        for (let i = 0; i < stackSize; i++) {
+            this.singleMoveArray.push([origin, destination]);
+        }
+    }
+
+    addSingleMove(origin, destination) {
+        this.singleMoveArray.push([origin, destination]);
+    }
 
 
 }
-const TEST_VALS_EMPTY = [
-    "","","","","","","","","","","","",
 
+const TEST_VALS_EMPTY = [
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
 ]
 
 const TEST_VALS_SIMPLE = [
-    "9t qr kr qb kb","1t 2t 3t 5t 4t","jg qg kg 10g 9g 7g 8g","","","","","","","","","",
+    "9t qr kr qb kb", "1t 2t 3t 5t 4t", "jg qg kg 10g 9g 7g 8g", "6t 7t 8t", "", "", "", "", "", "", "", "",
 
 ]
 
@@ -1432,6 +1542,21 @@ const TEST_VALS_DEMO = [
     "7b 8g qb kr 4y jr qr",
     "9b 8b",
     "14t qr 7g jg 10r kg kb",
+    ""
+]
+
+const TEST_VALS_DEMO_FIXED = [
+    "2r 5g 7t qy 4g 4r 12t 11t",
+    "10g 13t jb 5r 15t 8t",
+    "8y 9y",
+    "10b 19t 6g 6r ky jy",
+    "10y 3y 7y qg 5y 10t 18t 17t 16t",
+    "6y",
+    "9g 9t",
+    "9r 8r 7r",
+    "7b 8g qb kr 4y jr qr",
+    "9b 8b",
+    "14t 3r 7g jg 10r kg kb",
     ""
 ]
 
@@ -1496,22 +1621,33 @@ const TEST_7 = [
 
 ]
 
-let skips = 1;
+const TRY_4 = [
+  "4g 6r 10t 8b 15t qb 18t",
+  "21t ky 3g 2g jr 2t 20t",
+  "8t 9t 3y 2y 6y 8y 19t",
+  "3t 5t 12t 0t 5r 7b 4r",
+  "6g 6b 5b 7r 16t 5g 10y",
+  "",
+  "qg jg 11t 10r 9y 9r 7y",
+  "6t 14t 4y 7g 9b 8r 17t",
+  "kb qy 4t 7t qr 8g kg",
+  "2b kr 1t 2r 13t 5y 9g",
+  "jy 3r 10g jb 10b 4b 3b",
+  "",
+]
 let deepestDepth = 0;
 let checkedSetsSize = 0;
+let priorityTracker = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,]
 
-function test(){
+function test() {
 
     // const inputVals = getInputValues();
     // const columnTextArray = inputVals.slice(0, 11);
     // const freeSlotString = inputVals[11]
 
-    const testArray = TRY3;
+    const testArray = TRY_4;
     const gs = GameState.initFromColumnsStringArray(testArray.slice(0, 11), testArray[11]);
 
-
-    // const res = gs.solve(500,500000);
-    // console.log(res);
 
     // setDisplayValsFromGameState(gs);
     // const solveResult = gs.solve(500, 100000);
@@ -1526,23 +1662,38 @@ function test(){
     // }
 
     const textdisp = gs.getDisplayTextArray();
-    for (const line of textdisp){
+    for (const line of textdisp) {
         console.log(line);
     }
 
-    // for (const move of gs.possibleMoves()){
-    //     console.log(move);
-    // }
+    for (const move of gs.possibleMoves()) {
+        console.log(move);
+    }
 
-    const result = gs.solve(150, 10000);
+    const result = gs.solve(150, 100000);
     console.log(result);
 
-    for (const move of result){
-        console.log(move.description);
+    if (result) {
+        let moveNum = 1;
+        for (const move of result) {
+            console.log(moveNum + ". " + move.description);
+            moveNum++;
+        }
     }
+
 
     console.log(deepestDepth);
     console.log(checkedSetsSize);
+    for (let i = -1; i < priorityTracker.length; i++) {
+      console.log(i + ": " +priorityTracker[i]);
+    }
+
+
+    // for (const column of gs.columnPilesArray){
+    //     console.log(column.getTopStack());
+    //     console.log(column.getCardBelowTopStack());
+    // }
+
 }
 
 test();
