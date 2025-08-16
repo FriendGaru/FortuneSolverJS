@@ -14,25 +14,26 @@ function showErrorGameState(errors) {
   });
 }
 
-function showValidGameState(sevenValues, columnData) {
+function showValidGameState(topRowVals, columnData) {
   document.getElementById('error-list').classList.add('hidden');
   document.getElementById('valid-data').classList.remove('hidden');
 
-  // Populate 7-value row
-  const sevenCells = document.querySelectorAll('.valid-cell-7');
+  // Populate top row values
+  const sevenCells = document.querySelectorAll('.top-row-cell');
   sevenCells.forEach((cell, i) => {
-    cell.textContent = sevenValues[i] || '';
+    cell.textContent = topRowVals[i] || '';
   });
 
   // Populate 11 columns
   const columns = document.querySelectorAll('.valid-column');
   columns.forEach((col, colIndex) => {
-    const rowsContainer = col.querySelector('.valid-rows');
+    const rowsContainer = col.querySelector('.valid-colum-row');
     rowsContainer.innerHTML = '';
     const rows = columnData[colIndex] || [];
     rows.forEach(val => {
       const div = document.createElement('div');
-      div.textContent = val;
+      div.textContent = val.toString();
+      // Using toString() to avoid error: "Assigned expression type T is not assignable to type string; Type string is not assignable to type T"
       rowsContainer.appendChild(div);
     });
   });
@@ -41,8 +42,8 @@ function showValidGameState(sevenValues, columnData) {
 
 function setResults(sub1, sub2, values) {
   // Set subheaders
-  document.getElementById('subheader1').textContent = sub1;
-  document.getElementById('subheader2').textContent = sub2;
+  document.getElementById('solution-subheader1').textContent = sub1;
+  document.getElementById('solution-subheader2').textContent = sub2;
 
   // Set ordered list items
   const resultList = document.getElementById('result-list');
@@ -59,7 +60,7 @@ function setResults(sub1, sub2, values) {
 // setResults("Summary:", "Details:", ["Item 1", "Item 2", "Item 3"]);
 
 // Get column and free slot input values
-function getStandardInputValues() {
+function getGameStateInputValues() {
   const values = [];
   for (let i = 1; i <= 11; i++) {
     const colInput = document.getElementById(`col${i}`);
@@ -71,7 +72,7 @@ function getStandardInputValues() {
 }
 
 // Get advanced settings input values
-function getAdvancedInputValues() {
+function getAdvancedSettingsInput() {
   const maxDepth = document.getElementById('max-allowed-depth');
   const maxStates = document.getElementById('max-game-states');
   return [
@@ -85,7 +86,7 @@ function getAdvancedInputValues() {
 // console.log(allValues);
 
 // Set first 12 input values
-function setStandardInputValues(values) {
+function setGameStateInputValues(values) {
   if (!Array.isArray(values) || values.length !== 12) {
     console.error("Expected an array of 12 values.");
     return;
@@ -101,7 +102,7 @@ function setStandardInputValues(values) {
 }
 
 // Set advanced input values (2)
-function setAdvancedInputValues(values) {
+function setAdvancedSettingInputValues(values) {
   if (!Array.isArray(values) || values.length !== 2) {
     console.error("Expected an array of 2 values.");
     return;
@@ -114,14 +115,14 @@ function setAdvancedInputValues(values) {
 }
 
 // Middle button hook
-const middleButton = document.getElementById('middle-button');
-middleButton.addEventListener('click', () => {
+const confirmInputButton = document.getElementById('confirm-input-button');
+confirmInputButton.addEventListener('click', () => {
   // This is where you handle the middle button click
-  console.log("Middle button clicked!");
+  console.log("Confirm input button clicked!");
 
   let userGameState = null;
   let errorFound = false;
-  const standardValues = getStandardInputValues();
+  const standardValues = getGameStateInputValues();
   try {
     const columnStrings = standardValues.slice(0,11);
     const freeSlotString = standardValues[11];
@@ -140,79 +141,87 @@ middleButton.addEventListener('click', () => {
 });
 
 // Result button hook
-const resultButton = document.getElementById('result-button');
-resultButton.addEventListener('click', () => {
-  const confirmedValues = getConfirmationValues();
-  const advSettings = getAdvancedInputValues();
-  let maxDepth = null;
-  try {
-    maxDepth = Number.parseInt(advSettings[0]);
-  } catch {
-    setResults("Max search depth must be set to a number!")
-  }
-  let maxStates = null;
-  try {
-    maxStates = Number.parseInt(advSettings[1]);
-  } catch {
-    setResults("Max games states to consider must be a number!")
-  }
-
-  if (confirmedValues === null){
-    setResults("Please fix input values before solving!")
-    return;
-  }
-
-  const gs = GameState.initFromColumnsStringArray(
-  confirmedValues.columnStringsArray, confirmedValues.freeSlot);
-  const [solutionMoveSets, recursionMonitor] = gs.solve(maxDepth, maxStates);
-
-  console.log("Result button clicked!");
-  if (solutionMoveSets === null){
-    setResults("No solution Found. :(", `Deepest Search Depth: ${recursionMonitor.deepestDepth}    Total Unique Game States Checked: ${recursionMonitor.checkedStates}`, []);
-  } else {
-    const solutionSteps = [] = [];
-    for (const solutionMoveSet of solutionMoveSets) {
-      solutionSteps.push(solutionMoveSet.description);
+const solveButton = document.getElementById('result-button');
+    solveButton.addEventListener('click', () => {
+    const confirmedValues = getConfirmationValues();
+    const advSettings = getAdvancedSettingsInput();
+    let maxDepth = -1;
+    try {
+        maxDepth = Number.parseInt(advSettings[0]);
+    } catch {
+        setResults("Max search depth must be set to a number!")
     }
-    setResults("Solution found! :)", `Deepest Search Depth: ${recursionMonitor.deepestDepth}    Total Unique Game States Checked: ${recursionMonitor.checkedStates}`, solutionSteps);
-  }
+    let maxStates = -1; // set to -1 to fix warning, should work fine as whatever.
+    try {
+        maxStates = Number.parseInt(advSettings[1]);
+    } catch {
+        setResults("Max games states to consider must be a number!")
+    }
+
+    if (confirmedValues === null){
+        setResults("Please fix input values before solving!")
+        return;
+    }
+
+    const gs = GameState.initFromColumnsStringArray(
+        confirmedValues.columnStringsArray, confirmedValues.freeSlot);
+    const [solutionMoveSets, recursionMonitor] = gs.solve(maxDepth, maxStates);
+
+    console.log("Solve button clicked!");
+    if (solutionMoveSets === null){
+        setResults("No solution Found. :(", `Deepest Search Depth: ${recursionMonitor.deepestDepth}    Total Unique Game States Checked: ${recursionMonitor.checkedStates}`, []);
+    } else {
+        const solutionSteps = [] = [];
+        for (const solutionMoveSet of solutionMoveSets) {
+            solutionSteps.push(solutionMoveSet.description);
+        }
+        setResults("Solution found! :)", `Deepest Search Depth: ${recursionMonitor.deepestDepth}    Total Unique Game States Checked: ${recursionMonitor.checkedStates}`, solutionSteps);
+    }
+
+    console.log("Move Priorities:");
+    console.log(recursionMonitor.priorityTracker);
+
 
 });
 
 function getConfirmationValues() {
-  const validSection = document.getElementById('valid-data');
-  if (validSection.classList.contains('hidden')) {
+    const validSection = document.getElementById('valid-data');
+    if (validSection.classList.contains('hidden')) {
     // Section is not in valid mode
     return null;
-  }
+    }
 
-  const result = {
+    const result = {
     topValues: [],
     columnStringsArray: [],
     freeSlot: "",
-  };
+    };
 
-  // Get the top row values
-  const topRowVals = document.querySelectorAll('.valid-cell-7');
-  topRowVals.forEach(cell => {
+    // Get the top row values
+    const topRowVals = document.querySelectorAll('.top-row-cell');
+    topRowVals.forEach(cell => {
     result.topValues.push(cell.textContent);
-  });
+    });
 
-  result.freeSlot = topRowVals[2].textContent;
-  if (result.freeSlot === "[    ]") result.freeSlot = ""; // We display an empty free slot with brackets for clarity
+    result.freeSlot = topRowVals[2].textContent;
+    // We display the free slot as "[   ]" or something similar, so we need to make sure we can recognize it properly
+    result.freeSlot = result.freeSlot.replace("[", '');
+    result.freeSlot = result.freeSlot.replace("]", '');
+    result.freeSlot = cleanInputString(result.freeSlot);
+    // if (result.freeSlot === "[  ]") result.freeSlot = ""; //Old method, only works if the blank freeSlot has that exact string val
 
-  // Get the 11 columns
-  const columns = document.querySelectorAll('.valid-column');
-  columns.forEach(col => {
-    const rowsContainer = col.querySelector('.valid-rows');
+    // Get the 11 columns
+    const columns = document.querySelectorAll('.valid-column');
+    columns.forEach(col => {
+    const rowsContainer = col.querySelector('.valid-colum-row');
     const rowValues = [];
     rowsContainer.querySelectorAll('div').forEach(div => {
       rowValues.push(div.textContent);
     });
     result.columnStringsArray.push(rowValues.join(" "));
-  });
+    });
 
-  return result;
+    return result;
 }
 
 
@@ -241,7 +250,7 @@ function setDisplayValsFromGameState(gameState) {
     const tarotSmall = gameState.tarotSmallPile.lookTopCard();
     const tarotLarge = gameState.tarotLargePile.lookTopCard();
     const freeSlot = gameState.freeSlotPile.lookTopCard();
-    // yrgb
+    // Suit order: y r g b
     const suitY = gameState.suitYPile.lookTopCard();
     const suitR = gameState.suitRPile.lookTopCard();
     const suitG = gameState.suitGPile.lookTopCard();
@@ -261,7 +270,7 @@ function setDisplayValsFromGameState(gameState) {
     }
 
     if (freeSlot === null) {
-        topVals.push("[    ]");
+        topVals.push("[  ]");
     } else {
         topVals.push(freeSlot.toString())
     }
@@ -288,6 +297,8 @@ function setDisplayValsFromGameState(gameState) {
     }
 
     const columnStringArrays = gameState.getColumnStringArrays();
+    console.log("Input Game State Confirmed");
+    gameState.logStateToConsole();
 
     showValidGameState(topVals, columnStringArrays)
 }
@@ -342,7 +353,7 @@ class Card {
         try {
             return new Card(intVal, cardSuit);
         } catch (error) {
-            throw new Error(`Invalid cardstr - ${cardStr}`);
+            throw new Error(`Invalid card string - ${cardStr}`);
         }
     }
 
@@ -755,7 +766,7 @@ class CardPile {
                 break;
             }
             default: {
-                throw new Error(`Cardpile as invalid type ${this.pileType}, can't search`)
+                throw new Error(`Invalid card pile type ${this.pileType}, can't search`)
             }
         }
         return cardCount;
@@ -1068,7 +1079,7 @@ class GameState {
             case "suitB":
                 return this.suitBPile;
             default:
-                throw new Error(`Inalid pile name - ${pileLabel}`);
+                throw new Error(`Invalid pile name - ${pileLabel}`);
         }
     }
 
@@ -1087,7 +1098,7 @@ class GameState {
         }
 
         if (this.freeSlotPile.isEmpty()) {
-            topLine += " [ ] "
+            topLine += " [  ] "
         } else {
             topLine += this.freeSlotPile.lookTopCard().toString().padStart(cellPadding, " ");
         }
@@ -1125,6 +1136,7 @@ class GameState {
         return outputArray;
     }
 
+    // Mainly for debugging
     logStateToConsole() {
         const lines = this.getDisplayTextArray(5);
         for (const line of lines) {
@@ -1132,9 +1144,13 @@ class GameState {
         }
     }
 
-    executeSingleMove(origin, dest) {
-        const originPile = this.getPileFromLabel(origin);
-        const destPile = this.getPileFromLabel(dest);
+    executeSingleMove(originLabel, destLabel) {
+        // Can enable this for debugging to make sure executed moves are actually valid
+        // if (!this.checkValidMove(originLabel, destLabel)) {
+        //     throw new Error(`Tried to execute invalid single move ${originLabel} -> ${destLabel}`);
+        // }
+        const originPile = this.getPileFromLabel(originLabel);
+        const destPile = this.getPileFromLabel(destLabel);
 
         const moveCard = originPile.popTopCard();
         destPile.placeCard(moveCard);
@@ -1148,6 +1164,7 @@ class GameState {
         this.loggedMoveSets.push(moveSet);
     }
 
+    // May be used for debugging to make sure executed moves are actually valid
     checkValidMove(origin, dest) {
         const originPile = this.getPileFromLabel(origin);
         const destPile = this.getPileFromLabel(dest);
@@ -1293,7 +1310,7 @@ class GameState {
     }
 
     /*
-    This will generate all possible moves (that are worth considering) from the current gamestate.
+    This will generate all possible moves (that are worth considering) from the current game state.
     They are generated in order from "most likely to be a good move" to "probably a waste of time".
     We assume that all forced moves have already been processed.
     The logic is a bit messy, but certain types of moves are a lot more likely to get good results than others.
@@ -1615,6 +1632,10 @@ class GameState {
         recursionMonitor.updateCheckedStates(checkedStatesSet.size);
 
         for (const nextPossibleMove of this.possibleMoves()) {
+            if (recursionMonitor){
+                const movePriority = nextPossibleMove.movePriority;
+                recursionMonitor.incrementPriorityTracker(movePriority);
+            }
             const subState = this.clone();
             subState.executeMoveSet(nextPossibleMove);
             const subResult = subState.subSolve(
@@ -1637,9 +1658,9 @@ class GameState {
     }
 
     /*
-    Generates a str representing the current gamestate.
+    Generates a str representing the current game state.
     Note, we don't have to care about what order the columns are in.
-    If you simply swapped the cards in two columns, that is still exactly the same gamestate except for the labels.
+    If you simply swapped the cards in two columns, that is still exactly the same game state except for the labels.
     Thus, we can just sort the strings representing each column before combining them.
     That's why we start with the free slot then join the sorted column strings.
      */
@@ -1671,7 +1692,7 @@ class MoveSet {
         this.singleMoveArray = [];
         this.description = description;
         this.movePriority = movePriority; // This is for keeping track of what move priority this is, just for debugging
-        priorityTracker[movePriority] += 1;
+
     }
 
     static newSingleMove(description, origin, destination, movePriority = 0) {
@@ -1694,18 +1715,28 @@ class MoveSet {
 }
 
 class RecursionMonitor{
-  constructor() {
+    static MAX_PRIORITY_VAL = 14
+    constructor() {
     this.deepestDepth = 0;
     this.checkedStates = 0;
-  }
+    this.priorityTracker = [];
+    for (let i = 0; i < RecursionMonitor.MAX_PRIORITY_VAL + 1; i++) { // One more, so -1 can be the last val
+        this.priorityTracker.push(0);
+    }
+    }
 
-  updateDepth(depth) {
+    updateDepth(depth) {
     this.deepestDepth = Math.max(this.deepestDepth, depth);
-  }
+    }
 
-  updateCheckedStates(checkedStates) {
+    updateCheckedStates(checkedStates) {
     this.checkedStates = Math.max(this.checkedStates, checkedStates);
-  }
+    }
+
+    incrementPriorityTracker(priorityVal){
+        this.priorityTracker[priorityVal]++;
+
+    }
 }
 
 
@@ -1824,8 +1855,7 @@ const TRY_4 = [
 ];
  */
 
-let priorityTracker = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,]
-let userGameState = null;
+
 
 const TEST_VALS_DEMO_FIXED = [
   "2r 5g 7t qy 4g 4r 12t 11t",
@@ -1842,8 +1872,8 @@ const TEST_VALS_DEMO_FIXED = [
   ""
 ];
 
-setStandardInputValues(TEST_VALS_DEMO_FIXED);
-setAdvancedInputValues(["250", "30000"])
+setGameStateInputValues(TEST_VALS_DEMO_FIXED);
+setAdvancedSettingInputValues(["250", "30000"])
 
 console.log(getConfirmationValues());
 

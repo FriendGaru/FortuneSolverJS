@@ -3,18 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Minimal Layout</title>
+  <title>FriendGaru's Fortune's Foundation Solver</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <header id="header">
-  <h1>Page Name</h1>
-  <p>Brief description of the page.</p>
+  <h1>FriendGaru's Fortune's Foundation Solver</h1>
+  <p>This is a solver for the game Fortune's Foundation found in the <a href="https://store.steampowered.com/app/1988540/The_Zachtronics_Solitaire_Collection/">Zachtronics Solitaire Coolection</a>.<br>
+      How to use:<br>
+      Simply input the card values from your game into the input spaces below. For each card, just put the rank and suit together.<br>
+      For example, put "3r" for the red three card, or "qb" for the blue queen. Be sure to separate each card with a space.<br>
+      If your game is in progress, you may also need to include the card in your Free Slot (which is what I'm calling the place you can put a card that covers up the suit piles.)<br>
+      You do not need to put in the values for your piles of committed cards up top, the solver will fill that in automatically.<br>
+      After you fill them in, hit the "->" button to confirm your input.<br>
+      If there are no problems, go ahead and hit the solve button to get your solution.<br>
+  </p>
 </header>
 
 <main id="main-container">
   <section id="input">
-    <h2>Input Section</h2>
+    <h2>Game State Input</h2>
     <form id="input-form">
       <!-- 11 column inputs & free slot input-->
       <div class="form-row">
@@ -66,9 +74,9 @@
         <input type="text" id="free-slot" maxlength="8" class="input-small">
       </div>
 
-      <!-- Advanced collapsible section -->
+      <!-- Advanced settings collapsible section -->
       <details>
-        <summary>Advanced</summary>
+        <summary>Advanced Settings</summary>
         <div class="form-row">
           <label for="max-allowed-depth">Max Allowed Search Depth:</label>
           <input type="text" id="max-allowed-depth" maxlength="6" class="input-adv-small">
@@ -81,54 +89,54 @@
     </form>
   </section>
 
-  <button id="middle-button">→</button>
+  <button id="confirm-input-button">→</button>
 
   <section id="confirmation">
-    <h2>Confirmation Section</h2>
+    <h2>Game State Display</h2>
 
     <!-- Error mode -->
     <ul id="error-list" class="hidden"></ul>
 
-    <!-- Valid mode -->
+    <!-- Valid game state mode -->
     <div id="valid-data" class="hidden">
       <!-- One row with 7 values -->
-      <div class="valid-row-seven">
-        <span class="valid-cell-7"></span>
-        <span class="valid-cell-7"></span>
-        <span class="valid-cell-7"></span>
-        <span class="valid-cell-7"></span>
-        <span class="valid-cell-7"></span>
-        <span class="valid-cell-7"></span>
-        <span class="valid-cell-7"></span>
+      <div class="valid-top-row">
+        <span class="top-row-cell"></span>
+        <span class="top-row-cell"></span>
+        <span class="top-row-cell"></span>
+        <span class="top-row-cell"></span>
+        <span class="top-row-cell"></span>
+        <span class="top-row-cell"></span>
+        <span class="top-row-cell"></span>
       </div>
 
       <!-- 11 columns with label and rows -->
       <div class="valid-columns">
-        <div class="valid-column"><strong>Col 1</strong><div class="valid-rows"></div></div>
-        <div class="valid-column"><strong>Col 2</strong><div class="valid-rows"></div></div>
-        <div class="valid-column"><strong>Col 3</strong><div class="valid-rows"></div></div>
-        <div class="valid-column"><strong>Col 4</strong><div class="valid-rows"></div></div>
-        <div class="valid-column"><strong>Col 5</strong><div class="valid-rows"></div></div>
-        <div class="valid-column"><strong>Col 6</strong><div class="valid-rows"></div></div>
-        <div class="valid-column"><strong>Col 7</strong><div class="valid-rows"></div></div>
-        <div class="valid-column"><strong>Col 8</strong><div class="valid-rows"></div></div>
-        <div class="valid-column"><strong>Col 9</strong><div class="valid-rows"></div></div>
-        <div class="valid-column"><strong>Col 10</strong><div class="valid-rows"></div></div>
-        <div class="valid-column"><strong>Col 11</strong><div class="valid-rows"></div></div>
+        <div class="valid-column"><strong>Col 1</strong><div class="valid-colum-row"></div></div>
+        <div class="valid-column"><strong>Col 2</strong><div class="valid-colum-row"></div></div>
+        <div class="valid-column"><strong>Col 3</strong><div class="valid-colum-row"></div></div>
+        <div class="valid-column"><strong>Col 4</strong><div class="valid-colum-row"></div></div>
+        <div class="valid-column"><strong>Col 5</strong><div class="valid-colum-row"></div></div>
+        <div class="valid-column"><strong>Col 6</strong><div class="valid-colum-row"></div></div>
+        <div class="valid-column"><strong>Col 7</strong><div class="valid-colum-row"></div></div>
+        <div class="valid-column"><strong>Col 8</strong><div class="valid-colum-row"></div></div>
+        <div class="valid-column"><strong>Col 9</strong><div class="valid-colum-row"></div></div>
+        <div class="valid-column"><strong>Col 10</strong><div class="valid-colum-row"></div></div>
+        <div class="valid-column"><strong>Col 11</strong><div class="valid-colum-row"></div></div>
       </div>
     </div>
   </section>
 </main>
 
 <div id="result-controls">
-  <button id="result-button">Run</button>
+  <button id="result-button">Solve</button>
 </div>
 
 <section id="result">
-  <h2>Results</h2>
-  <div id="subheaders">
-    <div id="subheader1"></div>
-    <div id="subheader2"></div>
+  <h2>Solution Result</h2>
+  <div id="solution-info-subheaders">
+    <div id="solution-subheader1"></div>
+    <div id="solution-subheader2"></div>
   </div>
   <ol id="result-list"></ol>
 </section>

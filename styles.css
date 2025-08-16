@@ -60,7 +60,7 @@ form {
 .input-adv-medium { max-width: 10ch; }
 
 /* Middle button */
-#middle-button {
+#confirm-input-button {
     min-width: 40px;
     align-self: stretch;
 }
@@ -87,11 +87,11 @@ form {
     box-sizing: border-box;
 }
 
-#subheaders {
+#solution-info-subheaders {
     margin-bottom: 0.5em;
 }
 
-#subheaders div {
+#solution-info-subheaders div {
     font-weight: bold;
     margin-bottom: 0.25em;
 }
@@ -114,13 +114,13 @@ form {
 
 .hidden { display: none; }
 
-.valid-row-seven {
+.valid-top-row {
     display: flex;
     gap: 0.5em;
     margin-bottom: 1em;
 }
 
-.valid-cell-7 {
+.top-row-cell {
     display: inline-block;
     width: 5ch;
     text-align: center;
@@ -149,13 +149,13 @@ form {
     text-align: center;
 }
 
-.valid-rows {
+.valid-colum-row {
     display: flex;
     flex-direction: column;
     gap: 0.25em;
 }
 
-.valid-rows div {
+.valid-colum-row div {
     width: 6ch;
     border: 1px solid #ccc;
     padding: 0.15em;
@@ -170,7 +170,7 @@ form {
         align-items: stretch;
     }
 
-    #middle-button {
+    #confirm-input-button {
         min-height: 40px;
         width: 100%;
     }
