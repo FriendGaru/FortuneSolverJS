@@ -192,8 +192,8 @@ const solveButton = document.getElementById('result-button');
     } else {
         const solutionSteps = [] = [];
         for (const solutionMoveSet of solutionMoveSets) {
-            // solutionSteps.push(solutionMoveSet.description); // Normal
-            solutionSteps.push(solutionMoveSet.description + solutionMoveSet.movePriority); // Includes move priority
+            solutionSteps.push(solutionMoveSet.description); // Normal
+            // solutionSteps.push(solutionMoveSet.description + solutionMoveSet.movePriority); // Includes move priority
         }
         setResults("Solution found! :)", `Deepest Search Depth: ${recursionMonitor.deepestDepth}    Total Unique Game States Checked: ${recursionMonitor.checkedStates}`, solutionSteps);
     }
