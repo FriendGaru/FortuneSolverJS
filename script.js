@@ -199,8 +199,8 @@ const solveButton = document.getElementById('result-button');
     }
 
     /* DEBUG LOGGING */
-    console.log("Move Priorities:");
-    console.log(recursionMonitor.priorityTracker);
+    // console.log("Move Priorities:");
+    // console.log(recursionMonitor.priorityTracker);
 
 });
 
@@ -1525,7 +1525,7 @@ class GameState {
                 if (originPile.isEmpty()) continue;
                 for (const destSuitPileLabel of GameState.SUIT_PILE_LABELS) {
                     const moveResult = this.genFlipMoveSet(originColumnLabel, destSuitPileLabel, firstEmptyColumnLabel, false, movePriority);
-                    if (moveResult !== null) yield moveResult;
+                    if (moveResult) yield moveResult;
                 }
             }
         }
@@ -1538,7 +1538,7 @@ class GameState {
                 const destColumnPile = this.getPileFromLabel(destColumnLabel);
                 if (destColumnPile.isEmpty()) continue; // we don't want to just throw the free card on empty columns yet
                 const moveResult = this.genMoveSet("freeSlot", destColumnLabel, false, movePriority);
-                if (moveResult !== null) yield moveResult;
+                if (moveResult) yield moveResult;
             }
         }
 
@@ -1554,7 +1554,7 @@ class GameState {
                     if (originColumnLabel === destColumnLabel) continue;
                     if (destColumn.isEmpty()) continue;
                     const moveResult = this.genFlipMoveSet(originColumnLabel, destColumnLabel, firstEmptyColumnLabel, false, movePriority);
-                    if (moveResult !== null) yield moveResult;
+                    if (moveResult) yield moveResult;
                 }
             }
         }
@@ -1570,7 +1570,7 @@ class GameState {
                 const destColumn = this.getPileFromLabel(destColumnLabel);
                 if (destColumn.isEmpty()) continue; // Ignore empty columns for now
                 const moveResult = this.genMoveSet(originColumnLabel, destColumnLabel, false, movePriority);
-                if (moveResult !== null) yield moveResult;
+                if (moveResult) yield moveResult;
             }
         }
         //  6. If there is an empty column and the free slot is empty,
@@ -1587,7 +1587,7 @@ class GameState {
               const destSuitPile = this.getPileFromLabel(destSuitPileLabel);
               if (destSuitPile.canReceiveCard(cardBelowTopStack)){
                 const moveResult = this.genMoveSet(originColumnLabel, firstEmptyColumnLabel, false, movePriority);
-                if (moveResult !== null) yield moveResult;
+                if (moveResult) yield moveResult;
               }
             }
           }
@@ -1604,11 +1604,11 @@ class GameState {
                 if (cardBelowTopStack === null) continue; // Should return null both if the pile is empty and if the whole pile is one stack
                 if (this.tarotSmallPile.canReceiveCard(cardBelowTopStack)) {
                     const moveResult = this.genMoveSet(originColumnLabel, firstEmptyColumnLabel, false, movePriority);
-                    if (moveResult !== null) yield moveResult;
+                    if (moveResult) yield moveResult;
                 }
                 if (this.tarotLargePile.canReceiveCard(cardBelowTopStack)) {
                     const moveResult = this.genMoveSet(originColumnLabel, firstEmptyColumnLabel, false, movePriority);
-                    if (moveResult !== null) yield moveResult;
+                    if (moveResult) yield moveResult;
                 }
             }
         }
@@ -1625,7 +1625,7 @@ class GameState {
                     const suitPile = this.getPileFromLabel(suitPileLabel);
                     if (suitPile.canReceiveCard(cardBelowTopStack)) {
                         const moveResult = this.genSingleMoveMoveSet("freeSlot", firstEmptyColumnLabel, false, movePriority);
-                        if (moveResult !== null) yield moveResult;
+                        if (moveResult) yield moveResult;
                     }
                 }
             }
@@ -1646,7 +1646,7 @@ class GameState {
                   if (destColumn.isEmpty()) continue;
                   if (!destColumn.canReceiveCard(cardBelowTopStack)) continue;
                   const moveResult = this.genSingleMoveMoveSet(originColumnLabel, "freeSlot", false, movePriority);
-                  if (moveResult !== null) yield moveResult;
+                  if (moveResult) yield moveResult;
                 }
             }
         }
@@ -1665,7 +1665,7 @@ class GameState {
               if (destColumn.isEmpty()) continue;
               if (!destColumn.canReceiveCard(cardBelowTopStack)) continue;
               const moveResult = this.genMoveSet(originColumnLabel, firstEmptyColumnLabel, false, movePriority);
-              if (moveResult !== null) yield moveResult;
+              if (moveResult) yield moveResult;
             }
           }
         }
@@ -1680,7 +1680,7 @@ class GameState {
             const [topStackSize, topStackTopCard, topStackBottomCard] = originColumn.getTopStack();
             if (topStackBottomCard.isColorCard() && topStackBottomCard.intVal === 13){
               const moveResult = this.genMoveSet(originColumnLabel, firstEmptyColumnLabel, false, movePriority);
-              if (moveResult !== null) yield moveResult;
+              if (moveResult) yield moveResult;
             }
           }
         }
@@ -1695,7 +1695,7 @@ class GameState {
                 const originTopStack = originColumn.getTopStack();
                 if (originTopStack[0] < 2) continue;
                 const moveResult = this.genMoveSet(originColumnLabel, firstEmptyColumnLabel, false, movePriority)
-                if (moveResult !== null) yield moveResult;
+                if (moveResult) yield moveResult;
             }
         }
 
@@ -1708,7 +1708,7 @@ class GameState {
                 const originTopStack = originColumn.getTopStack();
                 if (originTopStack[0] !== 1) continue;
                 const moveResult = this.genSingleMoveMoveSet(originColumnLabel, "freeSlot", false, movePriority);
-                if (moveResult !== null) yield moveResult;
+                if (moveResult) yield moveResult;
             }
         }
 
@@ -1720,7 +1720,7 @@ class GameState {
                 const topStack = originColumn.getTopStack();
                 if (topStack[0] !== 2) continue;
                 const moveResult = this.genSingleMoveMoveSet(originColumnLabel, "freeSlot", false, movePriority);
-                if (moveResult !== null) yield moveResult;
+                if (moveResult) yield moveResult;
             }
         }
 
@@ -1733,14 +1733,14 @@ class GameState {
                 const topStack = originColumn.getTopStack();
                 if (topStack[0] < 2) continue;
                 const moveResult = this.genMoveSet(originColumnLabel, firstEmptyColumnLabel, false, movePriority);
-                if (moveResult !== null) yield moveResult;
+                if (moveResult) yield moveResult;
             }
         }
         //   16. If a column is empty and the free slot is full, try moving the free slot card to the column.
         movePriority = 16;
         if (!(freeSlotIsEmpty) && (firstEmptyColumnLabel)) {
             const moveResult = this.genMoveSet("freeSlot", firstEmptyColumnLabel, false, movePriority);
-            if (moveResult !== null) yield moveResult;
+            if (moveResult) yield moveResult;
         }
 
         //   17. If a column is empty, try moving a single card stack to it.
@@ -1752,7 +1752,7 @@ class GameState {
                 const topStack = originColumn.getTopStack();
                 if (topStack[0] !== 1) continue;
                 const moveResult = this.genMoveSet(originColumnLabel, firstEmptyColumnLabel, false, movePriority);
-                if (moveResult !== null) yield moveResult;
+                if (moveResult) yield moveResult;
             }
         }
         //   18. If a column is empty, try moving the top card of a 2 size stack to the empty column.
