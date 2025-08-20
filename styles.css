@@ -59,7 +59,13 @@ form {
 .input-adv-small { max-width: 6ch; }
 .input-adv-medium { max-width: 10ch; }
 
-/* Middle button */
+/* input section buttons */
+#clear-values-button, #demo-values, #random-game-button{
+    min-width: 40px;
+    align-self: stretch;
+}
+
+/* Confirm input button */
 #confirm-input-button {
     min-width: 40px;
     align-self: stretch;
